@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load staticfiles %}
+
+{% load i18n %}
+
+
+{% block BASE_CSS %}
+<style type="text/css">
+
+</style>
+{% endblock %}
+
+{% block CSS %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/questions/questions.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/jquery.countdown.css' %}">
+{% endblock %}
+
+{% block BODY_CONTENT %}
+
+<div id="askkit-container" class="container-fluid" rel="main">
+	<div class="row">
+		<div class="col-md-12 text-center" style="margin-top:1em;">
+			{% include 'adsense/main.html' %}
+		</div>
+	</div>
+	
+	{% if question %}
+
+	<div class="comp">
+	{% include 'questions/modal_vote.html' with question=question %}
+
+	{% include 'questions/header.html' with question=question %}
+
+	{% include 'questions/body.html' with question=question %}
+	</div>
+
+	{% include 'questions/charts.html' with question=question replies_ordered=replies_ordered %}
+
+	<div class="comp">
+	{% include 'questions/comments.html' with question=question %}
+	</div>
+
+	{% else %}
+	<div class="row">
+		<div class="col-md-6 col-md-offset-3">
+			<h1>{% trans 'We have a lost question over here.' %}</h1>
+		</div>
+	</div>
+	{% endif %}
+
+</div>
+
+{% endblock %}
+
+{% block JAVASCRIPT %}
+<script type="text/javascript">
+
+	$(document).ready(function(){
+		container_margin_top_handler();
+	});
+
+	$(window).resize(function(){
+		container_margin_top_handler();
+	});
+
+</script>
+{% endblock %}

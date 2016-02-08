@@ -1,0 +1,19 @@
+{% load i18n %}
+
+<div class="comp comp-welcome">
+	<h1 id="about" class="text-gray">Welcome to Askkit</h1>
+	<div class="blog-post about">
+
+		{% url 'dashboard' as dashboard_url %}
+		{% blocktrans %}
+
+		<p>If you have ever had a question but didn’t know how to answer it, this is your place. At <a href="{{dashboard_url}}"><strong>Askkit</strong></a> you will make it easily, letting other users vote and comment it. <em>White and gold or black and blue?</em>, <em>Mario or Luigi?</em>, <em>Pizza, pasta or salad?</em> or <em>What could I have for dinner?</em> This are some examples that we proprose to you. </p>
+		{% endblocktrans %}
+		</br>
+		{% url 'rand_question' as rand_question_url %}
+		{% blocktrans %}
+		<p>Just click on <a href="{{rand_question_url}}"><strong>Random question</strong></a> to see an example.</p>
+		{% endblocktrans %}
+
+	</div>
+</div>

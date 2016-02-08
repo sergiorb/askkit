@@ -1,0 +1,29 @@
+{% load tz %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+<div class="comp comp-question-update">
+	<form id="editForm" class="editForm" action="" method="post" enctype="multipart/form-data">{% csrf_token %}
+	    {{updateQuestionForm|crispy}}
+		{{updateReplyFormSet|crispy}}
+		{{captchaForm|crispy}}
+		{% if replies_count >= max_replies %}
+		<p class="alert alert-info">{% trans 'You have reached your current max replies number per question.' %}</p>
+		{% endif %}
+	    
+	    <div class="h-separator"></div>
+	    <div class="row">
+	    	<div class="col-xs-12 col-sm-6">
+				<button id="eqFormUpdateBtn" class="btn btn-primary" type="button" data-toggle="modal" data-target="#qumo-update" data-canonical="update" data-qtext="{% trans 'are you sure you want to update this question?' %}" data-actiontext="{% trans 'Update' %}" data-form="editForm">{% trans 'Update' %}</button>
+
+				{% if replies_count < max_replies %}
+				<input class="btn btn-default" type="submit"  name="add_reply-{{replies_count}}" value="Add reply" />
+				{% else %}
+				<button class="btn btn-default" type="button" disabled="disabled">Add reply</button>
+				{% endif %}
+
+				<button id="eqFormCancelBtn" class="btn btn-warning" type="button" data-toggle="modal" data-target="#qumo-update" data-canonical="cancel" data-qtext="{% trans 'are you sure you want to cancel?' %}" data-actiontext="{% trans 'Cancel' %}" data-link="{% url 'question' name question.token %}">{% trans 'Cancel' %}</button>
+			</div>
+		</div>
+	</form>
+</div>

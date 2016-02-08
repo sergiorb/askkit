@@ -1,0 +1,31 @@
+{% load tz %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+<div class="panel panel-warning askkit-collapse">
+    <div class="panel-heading">
+        <h4 class="panel-title">
+            <a class="panel-toggle">
+            <span id="glyphicon-minus" class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+            {% trans 'Warning' %}
+            <span id="glyphicon-minus" class="glyphicon glyphicon-minus float-right" aria-hidden="true"></span>
+            <span id="glyphicon-plus" class="glyphicon glyphicon-plus float-right" aria-hidden="true"></span>
+            </a>
+        </h4>
+    </div>
+    <div class="panel-collapse collapse">
+        <div class="panel-body">
+            {% for warning in warnings %}
+                {% if warning == 'anon' %}
+                <p><strong>{% trans 'Anonymous User' %}:</strong> {% trans 'it seems that you are making a question as an anonymous user. Remember that you will not be able to edit it in the future.' %}</p>
+
+                {% url 'account_signup' as account_signup %}
+
+                {% blocktrans %}
+                <p>Please, <a href="{{ account_signup }}">make an account</a> to get control of your question.</p>
+                {% endblocktrans %}
+                {% endif %}
+            {% endfor %}
+        </div>
+
+    </div>
+</div>

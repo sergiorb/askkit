@@ -1,0 +1,25 @@
+{% load static %}
+{% load staticfiles %}
+
+<div class="row profile-header">
+	<div class="col-md-12 no-padding profile-landscape-wrapper">
+	 <!--<img class="profile-info-avatar" src="http://lorempixel.com/400/400/abstract/6/">-->
+	 <img class="profile-info-avatar" src="{% get_media_prefix %}{{profile.avatar}}">
+	</div>
+	<div class="col-md-12 no-padding profile-info">
+		<div class="col-md-2 col-md-offset-3 profile-data profile-data-name">
+			<h3>@<span>{{profile}}</span></h3>
+		</div>
+
+		<div class="col-md-2 profile-data profile-data-questions">
+			<img src="{% static 'img/icon-question-sign.png' %}">
+			<span>{{questions.count}}</span>
+		</div>
+	
+		<div class="col-md-2 profile-data profile-data-total-votes">
+			<img src="{% static 'img/icon-check.png' %}">
+			<span>{{votes_num}}</span>
+		</div>
+		
+	</div>
+</div>

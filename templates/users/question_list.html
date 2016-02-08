@@ -1,0 +1,86 @@
+{% load static %}
+{% load staticfiles %}
+{% load i18n %}
+
+
+{% for question in questions %}
+<article class="row profile-question comp">
+	
+		<div class="col-sm-12 col-md-12 header_question">
+			<a href="{% url 'question' question.asker.user.username question.token %}">
+				<h2 class="">{{question.question}}</h2>
+			</a>
+		</div>
+
+		<div class="col-sm-12 col-md-12 header_info">
+			<div class="label-div">
+				<span class="label label-default">{{question.votes}} {% trans 'Vote' %}{% if question.get_number_of_votes != 1 %}s{% endif %}</span>
+			</div>
+
+			{% if not question.allow_anonymous_voter %}
+			<div class="label-div">
+			<span class="label label-signup-required">{% trans 'Vote with registry' %}</span>
+			</div>
+			{% endif %}
+
+			{% if question.data_require_vote %}
+			<div class="label-div">
+			<span class="label label-info">{% trans 'Chart require vote' %}</span>
+			</div>
+			{% endif %}
+
+			{% if question.context %}
+			<div class="label-div">
+			<span class="label label-warning">{% trans 'Context' %}</span>
+			</div>
+			{% endif %}
+
+			{% if question.get_active_carousel %}
+			<div class="label-div">
+			<span class="label label-media">{% trans 'Carousel' %}</span>
+			</div>
+			{% endif %}
+
+			{% if question.has_end %}
+			<div class="label-div">
+			<span class="label label-danger">{% trans 'Has clossing date' %}</span>
+			</div>
+			{% endif %}
+		</div>
+
+	<!--
+	{% if question.get_active_carousel %}
+	<div class="row carousel">
+		 {#% include 'carousel/carousel.html' with carousel=question.get_active_carousel %#}
+	</div>
+	{% endif %}
+	<div class="row replies">
+		<div id="{{question.id}}" class="col-md-12 text-center">
+			{% for reply in question.replies.all %}
+			<button id="{{reply.id}}" type="button" class="btn btn-custom btn-md">{{reply}}</button>
+			{% endfor %}
+		</div>
+	</div>
+
+	<div class="row info">
+		
+		<div class="col-md-3 col-md-offset-9 comments">
+			<p>
+				<a href="#comments">
+					{{question.get_number_of_comments}}</span><img src="{% static 'img/icon-comment.png' %}">
+				</a>
+				<a href="#mcForm">
+					<img src="{% static 'img/icon-pencil.png' %}">
+				</a>
+			</p>
+		</div>		
+	</div>
+	-->
+</article>
+{% empty %}
+<div class="jumbotron">
+	<div class="row text-center">
+		<h2 class="text-muted">{% trans 'Sorry, there are no questions yet.' %}</h2>
+	</div>
+</div>
+{% endfor %}

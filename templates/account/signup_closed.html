@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% load staticfiles %}
+
+{% load crispy_forms_tags %}
+{% load i18n %}
+
+{% block CSS %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/core/dashboard.css' %}">
+{% endblock %}
+
+{% block head_title %}{% trans "Sign Up Closed" %}{% endblock %}
+
+{% block BODY_CONTENT %}
+
+<div id="askkit-container" class="container-fluid" rel="main">
+    <div class="row dashboard-body">
+        <div class="col-md-6 col-md-offset-3">
+			<h1 class="text-grey">{% trans "Sign Up Closed" %}</h1>
+			<p>{% trans "We are sorry, but the sign up is currently closed." %}</p>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block JAVASCRIPT %}
+<script type="text/javascript">
+
+  $(document).ready(function(){
+    container_margin_top_handler();
+
+  });
+
+  $(window).resize(function(){
+    container_margin_top_handler();
+  });
+
+</script>
+{% endblock %}
+

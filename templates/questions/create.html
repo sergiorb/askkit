@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% load crispy_forms_tags %}
+
+{% load tz %}
+{% load i18n %}
+
+{% block CSS %}
+<style type="text/css">
+	.redactor-box {
+		max-width: 1280px !important;
+	}
+</style>
+
+<link rel="stylesheet" type="text/css" href="{% static 'css/questions/questions.css' %}">
+
+{% endblock %}
+
+{% block BODY_CONTENT %}
+<!-- Begin page content -->
+<div id="askkit-container" class="container-fluid" rel="main">
+	<div class="row question-create-body">
+		<div class="col-md-3">
+			<div class="comp text-center">
+				<h2 class="text-gray">{% trans 'Create Question' %}</h2>
+			</div>
+      		{% if warnings %}
+      			<div class="visible-xs-block visible-sm-block">
+        		{% include 'core/components/question-create-warnings.html' %}
+        		</div>
+      		{% endif %}
+      		{% include 'core/components/question-create-explanation.html' %}
+		</div>
+		<div class="col-md-6">
+			{% include 'questions/create_form.html' %}
+		</div>
+		<div class="col-md-3 visible-md-block visible-lg-block">
+			{% if warnings %}
+        		{% include 'core/components/question-create-warnings.html' %}
+      		{% endif %}
+		</div>
+	</div>
+	{% include 'questions/modal_create.html' %}
+</div>
+
+{% endblock %}
+
+{% block JAVASCRIPT %}
+<script type="text/javascript">
+
+	$(document).ready(function(){
+		container_margin_top_handler();
+    	askkit_collapse();
+	});
+
+	$(window).resize(function(){
+		container_margin_top_handler();
+	});
+
+</script>
+
+{% endblock %}

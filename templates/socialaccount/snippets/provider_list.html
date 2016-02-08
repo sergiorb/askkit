@@ -1,0 +1,34 @@
+{% load socialaccount %}
+{% load i18n %}
+{% load staticfiles %}
+
+<style type="text/css">
+	.btn {
+		margin-left: 0;
+	}
+</style>
+
+{% for provider in socialaccount.providers %}
+	{% if provider.id == "openid" %}
+		{% for brand in provider.get_brands %}
+		  <a title="{{brand.name}}" 
+		     class="socialaccount_provider {{provider.id}} {{brand.id}}" 
+		     href="{% provider_login_url provider.id openid=brand.openid_url process=process %}"
+		     >{{brand.name}}</a>
+		{% endfor %}
+	{% endif %}
+
+	{% if provider.id == "facebook" %}
+	 		<a title="{{provider.name}}" class="btn btn-block btn-social btn-facebook" href="{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}">
+			<i class="fa fa-facebook"></i> {% trans 'Sign in with Facebook' %}
+		</a>
+	{% elif provider.id == "twitter" %}
+		<a title="{{provider.name}}" class="btn btn-block btn-social btn-twitter" href="{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}">
+			<i class="fa fa-twitter"></i> {% trans 'Sign in with Twitter' %}
+		</a>
+	{% else %}
+	  <a title="{{provider.name}}" class="socialaccount_provider {{provider.id}}" 
+	     href="{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}">{{provider.name}}</a>
+	{% endif %}
+{% endfor %}
+

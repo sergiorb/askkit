@@ -1,0 +1,50 @@
+{% load i18n %}
+
+{% url 'dashboard' as url_dashboard %}
+
+{% if question.is_active %}
+<div class="{% if not request.path == url_dashboard %}comp{% endif %}">
+	<div class="row charts-wrapper">
+		<div class="col-md-12">	
+			{% if not question.hide_data %}
+				{% if question.votes > 0 %}
+					{% if question.data_require_vote %}
+						{% if voted %}
+							{% include 'questions/donut_chart.html' with replies_ordered=replies_ordered replies=replies %}
+						{% else %}
+							<h4 class="text-center">{% trans "To see the question results, you have to vote first" %}</h4>
+						{% endif %}
+					{% else %}
+						{% include 'questions/donut_chart.html' with replies_ordered=replies_ordered replies=replies %}
+					{% endif %}
+				{% else %}
+					<h4 class="text-center">{% trans 'There are no votes for this question yet' %}.</h4>
+				{% endif %}
+			{% else  %}
+				<h4 class="text-center">{% trans "The question results are not available at the moment" %}.</h4>
+			{% endif %}
+
+		</div>
+	</div>
+</div>
+{% elif not question.is_active and question.time_to_begin %}
+
+{% else %}
+<div class="{% if not request.path == url_dashboard %}comp{% endif %}">
+	<div class="row charts-wrapper">
+		<div class="col-md-12">
+			{% if not question.hide_data %}
+				{% if question.votes > 0 %}
+					{% include 'questions/donut_chart.html' with replies_ordered=replies_ordered replies=replies %}
+				{% else %}
+					<h4 class="text-center">{% trans 'There are no votes for this question yet' %}.</h4>
+				{% endif %}
+			{% else  %}
+				<h4 class="text-center">{% trans "The question results are not available at the moment" %}</h4>
+			{% endif %}
+		</div>
+	</div>
+</div>
+{% endif %}
+
+

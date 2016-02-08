@@ -1,0 +1,47 @@
+{% load static %}
+{% load staticfiles %}
+
+{% load i18n %}
+<div class="comp">
+	<h1 id="thanks" class="text-gray">{% trans 'Special thanks to' %}</h1>
+
+	<p>We want to show our gratitude to all the people who have been involved in this project:</p>
+
+	<table class="table">
+		<thead>
+			<tr>
+				<th><span class="glyphicon glyphicon-list" aria-hidden="true"></span></th>
+			    <th><span class="glyphicon glyphicon-user" aria-hidden="true"></span></th>
+			    <th><span class="glyphicon glyphicon-align-left" aria-hidden="true"></span></th>
+			    <th><span class="glyphicon glyphicon-link" aria-hidden="true"></span></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+			    <td>
+			    	<span class="glyphicon glyphicon-globe" aria-hidden="true"></span>
+			    	<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+			    </td>
+			    <td>Beatriz Porras Peralta</td>
+			    <td>{% trans 'Translation, and language review' %}</td>
+			    <td><a target="_blank" href="https://es.linkedin.com/pub/beatriz-porras-peralta/6b/789/b3b">Linkedin</a></td>
+			</tr>
+			<tr>
+			    <td>
+			    	<span class="glyphicon glyphicon-picture" aria-hidden="true"></span>
+			    </td>
+			    <td>Laura Muchada</td>
+			    <td>{% trans 'Image support' %}</td>
+			    <td></td>
+			</tr>
+			<tr>
+			    <td>
+			    	<span class="glyphicon glyphicon-cloud" aria-hidden="true"></span>
+			    </td>
+			    <td>{% trans 'Internet &amp; its people' %}</td>
+			    <td>{% trans 'Problem solver' %}</td>
+			    <td></td>
+			</tr>
+		</tbody>
+	</table>
+</div>

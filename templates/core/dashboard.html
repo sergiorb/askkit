@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+{% load i18n %}
+
+{% block CSS %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/core/dashboard.css' %}">
+{% endblock %}
+
+{% block BODY_CONTENT %}
+
+<div id="askkit-container" class="container-fluid" rel="main">
+
+	{% if user.is_anonymous %}
+	<div class="row dashboard-body">
+		<div class="col-md-12 text-center" style="margin-top:1em;">
+			{% include 'adsense/main.html' %}
+		</div>
+		<div class="col-md-6">
+			{% include 'core/components/welcome.html' %}
+		</div>
+		<div class="col-md-6">
+			{% include 'account/comp-login.html' %}
+		</div>
+	</div>
+	{% else %}
+	<div class="row dashboard-body">
+		<div class="col-md-12 text-center" style="margin-top:1em;">
+			{% include 'adsense/main.html' %}
+		</div>
+		<div class="col-md-6">
+			<div class="comp">
+				<h3 class="text-gray">{% trans 'A random question' %}</h3>
+			</div>
+			{% include 'core/components/com-question.html' %}
+		</div>
+		<div class="col-md-6">
+			<div class="comp">
+				<h3 class="text-gray">Notifications</h3>
+			</div>
+			{% include 'core/components/comp-notifications.html' %}
+		</div>
+	</div>
+	{% endif %}
+
+</div>
+
+{% endblock %}
+
+{% block JAVASCRIPT %}
+<script type="text/javascript">
+
+	$(document).ready(function(){
+		container_margin_top_handler();
+		align_center('#chart-parent', '#canvas-holder', '#chart-data', 992, 9999);
+		level_elements('.comp-question', '.comp-notifications', 992, 9999);
+
+	});
+
+	$(window).resize(function(){
+		container_margin_top_handler();
+		align_center('#chart-parent', '#canvas-holder', '#chart-data',  992, 9999);
+		level_elements('.comp-question', '.comp-notifications', 992, 9999);
+	});
+
+</script>
+{% endblock %}

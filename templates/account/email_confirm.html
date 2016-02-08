@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% load staticfiles %}
+{% load account %}
+{% load crispy_forms_tags %}
+{% load i18n %}
+
+{% block CSS %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/core/dashboard.css' %}">
+{% endblock %}
+
+{% block head_title %}{% trans "Confirm E-mail Address" %}{% endblock %}
+
+{% block BODY_CONTENT %}
+
+<div id="askkit-container" class="container-fluid" rel="main">
+    <div class="row dashboard-body">
+            <div class="col-md-6 col-md-offset-3">
+            	<div class="comp">
+				<h1 class="text-gray">{% trans "Confirm E-mail Address" %}</h1>
+
+				{% if confirmation %}
+
+				{% user_display confirmation.email_address.user as user_display %}
+
+				<p>{% blocktrans with confirmation.email_address.email as email %}Please confirm that <a href="mailto:{{ email }}">{{ email }}</a> is an e-mail address for user {{ user_display }}.{% endblocktrans %}</p>
+
+				<form method="post" action="{% url 'account_confirm_email' confirmation.key %}">{% csrf_token %}
+					<button class="btn btn-primary" type="submit">{% trans 'Confirm' %}</button>
+				</form>
+
+				{% else %}
+
+				{% url 'account_email' as email_url %}
+
+				<p>{% blocktrans %}This e-mail confirmation link expired or is invalid. Please <a href="{{ email_url }}">issue a new e-mail confirmation request</a>.{% endblocktrans %}</p>
+
+				{% endif %}
+				</div>
+            </div>
+        </div> 
+</div>
+
+{% endblock %}
+
+{% block JAVASCRIPT %}
+<script type="text/javascript">
+
+  $(document).ready(function(){
+    container_margin_top_handler();
+
+  });
+
+  $(window).resize(function(){
+    container_margin_top_handler();
+  });
+
+</script>
+{% endblock %}
+
+

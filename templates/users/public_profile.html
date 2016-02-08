@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load staticfiles %}
+
+{% load i18n %}
+
+{% block APP_CSS %}
+<style type="text/css">
+	.profile-landscape-wrapper {
+        /*background: url('http://lorempixel.com/1920/600/abstract/8/');*/
+        background: url('{% get_media_prefix %}{{profile.background}}');
+    }
+</style>
+{% endblock %}
+
+{% block CSS %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/users/public_profile.css' %}">
+{% endblock %}
+
+{% block BODY_CONTENT %}
+<!-- Begin page content -->
+<div id="askkit-container" class="container-fluid" rel="main">
+
+	{% include 'users/header.html' with profile=profile  %}
+
+	<div class="row profile-body">
+		<div class="col-md-6 col-md-offset-3">
+			{% include 'users/question_list.html' with question=question %}
+		</div>
+	</div>
+
+</div>
+{% endblock %}
+
+{% block JAVASCRIPT %}
+<script type="text/javascript">
+	$(document).ready(function(){
+		container_margin_top_handler();
+		avatar_handler();
+
+	});
+
+	$(window).resize(function(){
+		container_margin_top_handler();
+		avatar_handler();
+	});
+</script>
+{% endblock %}

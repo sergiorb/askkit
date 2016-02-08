@@ -1,0 +1,18 @@
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+{% load tz %}
+{% load i18n %}
+
+<div class="comp">
+	<form id="editProfileForm" class="editForm" action="" method="post" enctype="multipart/form-data">{% csrf_token %}
+	    
+	    {{userEditForm|crispy}}
+	    {{profileEditForm|crispy}}
+	    
+	    <div class="h-separator"></div>
+
+		<button id="eqFormUpdateBtn" class="btn btn-primary" type="button" data-toggle="modal" data-target="#qumo-update" data-canonical="update" data-qtext="{% trans 'are you sure you want to update your profile?' %}" data-actiontext="{% trans 'Update Profile' %}" data-form="editProfileForm">{% trans 'Update' %}</button>
+			
+		<button id="eqFormCancelBtn" class="btn btn-warning" type="button" data-toggle="modal" data-target="#qumo-update" data-canonical="cancel" data-qtext="{% trans 'are you sure you want to cancel?' %}" data-actiontext="{% trans 'Cancel' %}" data-link="{% url 'public_profile' profile.user %}">{% trans 'Cancel' %}</button>
+	</form>
+</div>

@@ -1,0 +1,45 @@
+{% load static %}
+{% load staticfiles %}
+{% load i18n %}
+<div class="comp comp-it">
+	<h1 id="it" class="text-gray">IT</h1>
+
+	<p>{% trans 'We are building Askkit wesite with' %}:</p>
+
+	<table class="table">
+		<thead>
+			<tr>
+				<th><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></th>
+			    <th><span class="glyphicon glyphicon-link" aria-hidden="true"></span></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+			    <td>Amazon Web Services</td>
+			    <td><a target="_blank" href="http://aws.amazon.com/what-is-cloud-computing"><img src="{% static 'img/aws-logo.png' %}" alt="Powered by AWS Cloud Computing"></a></td>
+			</tr>
+			<tr>
+			    <td>Django</td>
+			    <td><a target="_blank" href="https://www.djangoproject.com/"><img src="{% static 'img/django-logo.png' %}"></a></td>
+			</tr>
+			<tr>
+				<td>HTML5</td>
+				<td><a href="http://www.w3.org/html/logo/">
+	<img src="{% static 'img/html5-logo.png' %}" alt="HTML5 Powered with CSS3 / Styling, and Semantics" title="HTML5 Powered with CSS3 / Styling, and Semantics">
+	</a></td>
+			</tr>
+			<tr>
+				<td>Bootstrap</td>
+				<td><a target="_blank" href="http://getbootstrap.com/"><img src="{% static 'img/bootstrap-solid.png' %}"></a></td>
+			</tr>
+			<tr>
+				<td>Jquery</td>
+				<td><a target="_blank" href="http://jquery.com/"><img src="{% static 'img/jquery-logo.png' %}"></a></td>
+			</tr>
+			<tr>
+				<td>Jquery UI</td>
+				<td><a target="_blank" href="http://jqueryui.com/"><img src="{% static 'img/jquery-ui-logo.png' %}"></a></td>
+			</tr>
+		</tbody>
+	</table>
+</div>

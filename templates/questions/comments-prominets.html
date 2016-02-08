@@ -1,0 +1,28 @@
+{% load tz %}
+{% load i18n %}
+
+{% timezone current_timezone %}
+
+{% with prominets=question.get_prominets_comments %}
+{% if prominets %}
+<div class="col-md-12 prominets">
+	<div class="col-md-12">
+		<h4>{% trans "Prominets" %}</h4>
+	</div>
+
+	{% for procomment in prominets %}
+	<div class="col-md-12 comment">
+		<div class="col-md-12 comment-header">
+			<a href="{% url 'public_profile' procomment.commenter %}">{{procomment.commenter}}</a> - {{procomment.date}}
+		</div>
+		<div class="col-md-12 comment-body">
+			{{procomment.text}}
+		</div>
+	</div>
+	{% endfor %}
+	
+</div>
+{% endif %}
+{% endwith %}
+
+{% endtimezone %}

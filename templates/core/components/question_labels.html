@@ -1,0 +1,39 @@
+{% load static %}
+{% load staticfiles %}
+{% load users_tags %}
+{% load tz %}
+{% load i18n %}
+
+	<div class="label-div">
+		<span class="label label-default">{{question.votes}} {% trans 'Vote' %}{% if question.get_number_of_votes != 1 %}s{% endif %}</span>
+	</div>
+
+	{% if not question.allow_anonymous_voter %}
+	<div class="label-div">
+	<span class="label label-signup-required">{% trans 'Vote with registry' %}</span>
+	</div>
+	{% endif %}
+
+	{% if question.data_require_vote %}
+	<div class="label-div">
+	<span class="label label-info">{% trans 'Chart require vote' %}</span>
+	</div>
+	{% endif %}
+
+	{% if question.context %}
+	<div class="label-div">
+	<span class="label label-warning">{% trans 'Context' %}</span>
+	</div>
+	{% endif %}
+
+	{% if question.get_active_carousel %}
+	<div class="label-div">
+	<span class="label label-media">{% trans 'Carousel' %}</span>
+	</div>
+	{% endif %}
+
+	{% if question.has_end %}
+	<div class="label-div">
+	<span class="label label-danger">{% trans 'Has clossing date' %}</span>
+	</div>
+	{% endif %}

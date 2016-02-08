@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load staticfiles %}
+
+{% load crispy_forms_tags %}
+{% load i18n %}
+
+{% block CSS %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/core/about.css' %}">
+{% endblock %}
+
+{% block BODY_CONTENT %}
+
+<div id="askkit-container" class="container-fluid" rel="main">
+
+	<div class="row about-body">
+		<div class="col-md-12">
+			<div class="comp">
+				<h1 id="privacy-policy" class="text-gray">{% trans 'Privacy Policy' %}</h1>
+			</div>
+		</div>
+		<div class="col-md-12">
+			{% include 'core/components/comp_privacy_policy.html' %}
+		</div>
+	</div>
+
+</div>
+
+{% endblock %}
+
+{% block JAVASCRIPT %}
+<script type="text/javascript">
+
+	$(document).ready(function(){
+		container_margin_top_handler();
+
+	});
+
+	$(window).resize(function(){
+		container_margin_top_handler();
+	});
+
+</script>
+{% endblock %}

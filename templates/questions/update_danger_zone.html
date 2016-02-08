@@ -1,0 +1,21 @@
+{% load tz %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+<div class="panel panel-danger askkit-collapse" data-mobhidden="true">
+    <div class="panel-heading">
+        <h4 class="panel-title">
+            <a class="panel-toggle">
+            <span id="glyphicon-plus" class="glyphicon glyphicon-fire" aria-hidden="true"></span>
+            {% trans 'Danger Zone' %}
+            <span id="glyphicon-minus" class="glyphicon glyphicon-minus float-right" aria-hidden="true"></span>
+            <span id="glyphicon-plus" class="glyphicon glyphicon-plus float-right" aria-hidden="true"></span>
+            </a>
+        </h4>
+    </div>
+    <div class="panel-collapse collapse">
+        <div class="panel-body">
+          <button id="eqFormAnonBtn" class="btn btn-danger" type="button" data-toggle="modal" data-target="#qumo-update" data-canonical="toanon" data-qtext="{% trans 'are you sure you want to make this question <strong>anonymous</strong>?' %}" data-actiontext="{% trans 'Make anonymous' %}" data-link="{% url 'question_make_anon' name question.token %}" data-btext="{% trans 'We will detach your account from this question; <strong>you will not be able to edit it in the future</strong> but anyone could still see it. Furthermore, we will reset its settings to default parameters.' %}">{% trans 'Make anonymous' %}</button>
+          <button id="eqFormDeleteBtn" class="btn btn-danger" type="button" data-toggle="modal" data-target="#qumo-update" data-canonical="delete" data-qtext="{% trans 'are you sure you want to <strong>delete</strong> this question?' %}" data-actiontext="{% trans 'Delete Question' %}" data-link="{% url 'question_delete' name question.token %}" data-btext="{% trans 'First, we will detach any data related to you from your question and make an anonymous copy for analysis purposes. Finally, we will <strong>erase</strong> your question and any related data.' %}">{% trans 'Delete Question' %}</button>
+        </div>
+    </div>
+</div>

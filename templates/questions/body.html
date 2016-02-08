@@ -1,0 +1,26 @@
+{% load sanitizer %}
+
+<div class="row body">
+
+	{% if question.context %}
+	<div class="row context">
+		<div class="col-md-12 question-context">
+			{% escape_html question.context "a, p, strong, em, span, del, ul, li, h1, h2, h3, h4, ol, hr, pre, blockquote, br" "href"%}
+		</div>
+	</div>
+	{% endif %}
+
+	<div class="row replies">
+		<div class="col-md-12 text-center">
+		{% if question.is_active %}
+			{% for reply in replies %}
+			<button type="button" class="btn btn-primary btn-md reply" data-toggle="modal" data-target="#qumo-{{question.token}}" data-reply="{{reply}}" data-qtoken="{{question.token}}" data-rtoken="{{reply.token}}" style="white-space: normal;">{% escape_html reply %}</button>
+			{% endfor %}
+	    {% else %}
+			{% for reply in replies %}
+			<button type="button" class="btn btn-primary btn-md reply" disabled="disabled">{% escape_html reply %}</button>
+			{% endfor %}
+		{% endif %}
+		</div>
+	</div>
+</div>

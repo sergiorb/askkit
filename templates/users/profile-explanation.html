@@ -1,0 +1,22 @@
+{% load tz %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+<div class="panel panel-info askkit-collapse" data-mobhidden="true"> 
+    <div class="panel-heading">
+        <h4 class="panel-title">
+            <a class="panel-toggle">
+            <span id="glyphicon-minus" class="glyphicon glyphicon-book" aria-hidden="true"></span>
+            {% trans 'Recomendations' %}
+            <span id="glyphicon-minus" class="glyphicon glyphicon-minus float-right" aria-hidden="true"></span>
+            <span id="glyphicon-plus" class="glyphicon glyphicon-plus float-right" aria-hidden="true"></span>
+            </a>
+        </h4>
+    </div>
+    <div class="panel-collapse collapse">
+        <div class="panel-body">
+          <p><strong>{% trans 'Profile image' %}:</strong> {% trans 'we recomend you a 250x250px good-quality image.' %}</p>
+          <p><strong>{% trans 'Background image' %}:</strong> {% trans 'default background is a 1920x200px image. You should preserve the height and the width if you want your image not to repeat.' %}</p>
+          
+        </div>
+    </div>
+</div>

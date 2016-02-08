@@ -1,0 +1,44 @@
+{% load crispy_forms_tags %}
+
+{% load sanitizer %}
+{% load tz %}
+{% load i18n %}
+
+<div class="row comments">
+	<div class="row">
+		<div class="col-md-12 header">
+			<h3>{% trans "Comments" %}</h3>
+		</div>
+	
+		<div class="col-md-6 mcomment">
+			{% if request.user.is_anonymous %}
+			<div id="mcForm" class="request_signup">
+				<p><a href="{% url 'account_signup' %}?next={% url 'question' question.asker question.token %}">{% trans 'Sign up</a> and leave your comment' %}</p>
+			</div>
+			{% else %}
+			<form id="mcForm" method="POST" action=''>{% csrf_token %}
+				{{makeCommentForm|crispy}}
+				<input id="mcFormBtn" type="submit" value='{% trans "Comment"%}' class="btn btn-primary"/>
+			</form>
+			
+			{% endif %}
+		</div>
+	</div>
+
+	<div class="row">
+		{% for comment in question.get_comments_by_date %}
+		<div class="col-md-12 comment {% if comment.is_prominet %}prominet{% endif %}">
+				<div class="col-md-12 comment-header">
+					<a href="{% url 'public_profile' comment.commenter %}">{{comment.commenter}}</a> - {{comment.date}}
+				</div>
+				<div class="col-md-12 comment-body">
+					<p>{% escape_html comment.text %}</p>
+				</div>
+		</div>
+		{% empty %}
+		<div class="col-md-12">
+			<h4>{% trans 'There are no comments for this question' %}.</h4>
+		</div>
+		{% endfor %}
+	</div>
+</div>

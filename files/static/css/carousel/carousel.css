@@ -1,0 +1,87 @@
+/* === Carousel  === */
+
+.row.carousel {
+  margin-bottom: 1em;
+}
+
+.askkit-carousel {
+
+  width: 100%;
+}
+
+.askkit-carousel .carousel-inner {
+  text-align: center;
+}
+
+.askkit-carousel .carousel-inner .item.image > img {
+  width: 90%;
+  margin: 0 auto !important;
+}
+
+.askkit-carousel .carousel-inner .item.video > .vendor {
+  width: 90%;
+  margin: 0 auto !important;
+}
+
+.askkit-carousel .carousel-inner .item.tweet {
+
+}
+
+.askkit-carousel .carousel-inner .item.tweet > iframe {
+  width: 90% !important;
+  margin: 0 auto !important;
+}
+
+.askkit-carousel .carousel-control {
+  background-color: transparent;
+  height: 0px;
+  width: 25px;
+}
+
+/* Extra Small Devices, Phones */
+@media only screen and (max-width : 550px){
+
+  /* === Carousel  === */
+
+  .askkit-carousel .carousel-indicators {
+    background-color: #CCC;
+    border: 2px solid #CCC;
+    border-radius: 4px;
+  }
+
+  .askkit-carousel .carousel-inner .item.image > img {
+    width: 100%;
+  }
+
+  .askkit-carousel .carousel-inner .item.video > .vendor {
+    width: 100%;
+  }
+
+  .askkit-carousel .carousel-inner .item.tweet > iframe {
+    width: 100% !important;
+  }
+
+  .askkit-carousel .carousel-control {
+    width: 50px;
+  }
+
+}
+
+
+/* Custom */
+@media only screen and (max-width : 400px){
+
+
+
+}
+
+/* Custom */
+@media only screen and (max-width : 360px){
+
+}
+
+/* Custom, iPhone Retina */
+@media only screen and (max-width : 320px){
+
+
+}

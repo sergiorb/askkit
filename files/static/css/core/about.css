@@ -1,0 +1,78 @@
+.about-body {
+}
+
+.about-body .comp-it img {
+
+	height: 32px; 
+}
+
+.about-body table {
+	margin-top: 1.6em;
+}
+
+.component {
+
+	margin-top: 1em;
+}
+
+.redactor-box textarea, .redactor-box iframe, .redactor-editor {
+
+	min-height: 120px !important;
+	max-height: 120px !important;
+}
+
+/*==========  Mobile First Method  ==========*/
+/* Large Devices, Wide Screens */
+@media only screen and (max-width : 1200px){
+
+}
+
+/* Medium Devices, Desktops */
+@media only screen and (max-width : 992px){
+
+}
+
+/* Small Devices, Tablets */
+@media only screen and (max-width : 768px){
+
+ 
+}
+
+/* Extra Small Devices, Phones */
+@media only screen and (max-width : 550px){
+	.about-body {
+		padding-left: 0em;
+		padding-right: 0em;
+	}
+}
+
+
+/* Custom */
+@media only screen and (max-width : 400px){
+
+
+
+}
+
+/* Custom */
+@media only screen and (max-width : 360px){
+
+
+}
+
+/* Custom */
+@media only screen and (min-width : 768px){
+
+
+}
+
+@media only screen and (max-width: 768px){
+
+}
+
+
+/* Custom, iPhone Retina */
+@media only screen and (max-width : 320px){
+	
+}
+

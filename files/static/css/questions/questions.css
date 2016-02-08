@@ -1,0 +1,167 @@
+/*******************/
+/* MODAL SECCTION  */
+/*******************/
+
+.qumo .btn #loader img {
+
+	height: 16px;
+}
+
+/*******************/
+/* HEADER SECCTION */
+/*******************/
+
+.qheader {
+
+	margin-top: 1.2em;
+}
+
+.qheader .title h1 {
+
+	margin: 0;
+	font-size: 2.2em;
+}
+
+.qheader .author {
+
+	margin-top: 0.7em;
+}
+
+.qheader .counter  {
+	
+	margin-top: 0.2em;
+}
+
+.qheader .counter span {
+	
+	font-size: 1.3em;
+}
+
+/*******************/
+/*  BODY SECCTION  */
+/*******************/
+
+.body {
+
+	margin-top: 0.9em;
+	margin-left: 0.5em;
+	margin-right: 0.5em;
+	padding: 0.7em;
+	padding-top: 1em;
+}
+
+.body .context {
+
+	margin-bottom: 0.3em;
+}
+
+.replies .reply  {
+
+	margin-top: 0.7em;
+}
+
+/*******************/
+/* CHARTS SECCTION */
+/*******************/
+
+.charts-wrapper {
+
+	margin-top: 1.9em;
+	margin-left: 0.5em;
+	margin-right: 0.5em;
+}
+
+.charts {
+
+	padding-bottom: 1em;
+}
+
+/*********************/
+/* COMMENTS SECCTION */
+/*********************/
+
+.comments {
+
+	margin-top: 0.9em;
+	margin-left: 0.5em;
+	margin-right: 0.5em
+}
+
+.comments .mcomment {
+
+	padding: 0.7em;
+}
+
+.comments .comment {
+
+	padding-left: 0;
+	padding-top: 0.4em;
+	margin-top: 1em;
+	background-color: #F5F5F5;
+}
+
+.comments .comment:last-child {
+
+	margin-bottom: 1em;
+}
+
+
+/*********************/
+/*       CREATE      */
+/*********************/
+
+.mqForm {
+	margin-top: 1em;
+}
+
+/*********************/
+/*       UPDATE      */
+/*********************/
+
+.editForm {
+	margin-top: 1em;
+}
+
+#eqFormDeleteBtn {
+	margin-top: 1em;
+}
+
+/*==========  Mobile First Method  ==========*/
+/* Large Devices, Wide Screens */
+@media only screen and (max-width : 1200px) {
+
+}
+/* Medium Devices, Desktops */
+@media only screen and (max-width : 992px) {
+	#eqFormDeleteBtn {
+		margin-top: 0;
+	}
+}
+/* Small Devices, Tablets */
+@media only screen and (max-width : 768px) {
+
+ 
+}
+/* Extra Small Devices, Phones */
+@media only screen and (max-width : 550px) {
+
+}
+/* Custom */
+@media only screen and (max-width : 400px) {
+
+}
+/* Custom */
+@media only screen and (max-width : 360px) {
+
+}
+/* Custom */
+@media only screen and (min-width : 768px){
+
+}
+@media only screen and (max-width: 768px) {
+
+}
+/* Custom, iPhone Retina */
+@media only screen and (max-width : 320px) {
+
+}

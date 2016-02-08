@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+{% load i18n %}
+
+{% block BODY_CONTENT %}
+
+<div id="askkit-container" class="container-fluid" rel="main">
+
+	<div class="row servererror-body">
+		<div class="col-md-6 col-md-offset-3">
+			<div class="comp text-center">
+				<h1 id="" class="text-gray">{% trans "That page doesn't exist!" %} :(</h1>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+{% endblock %}
+
+{% block JAVASCRIPT %}
+<script type="text/javascript">
+
+	$(document).ready(function(){
+		container_margin_top_handler();
+		center_vertical_element('.servererror-body', '.comp', 769, 9999)
+	});
+
+	$(window).resize(function(){
+		container_margin_top_handler();
+		center_vertical_element('.servererror-body', '.comp', 769, 9999)
+	});
+
+</script>
+{% endblock %}

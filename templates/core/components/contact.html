@@ -1,0 +1,31 @@
+{% load static %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+{% load i18n %}
+
+<div class="comp comp-contact">
+	<div class="separator-top-2em"></div>
+	{% if reportFormOK %}
+	<p class="alert alert-success .alert-dismissible">
+		{% trans 'We have recieved your report. Your case token is:' %} <strong>{{report_obj.token}}</strong>
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		</button>
+	</p>
+	{% endif %}
+	{% if reportFormERROR %}
+	<p class="alert alert-danger .alert-dismissible">
+		{% trans 'An error happened.' %}
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		</button>
+	</p>
+	{% endif %}
+
+	<form id="contactForm" class="contactForm" method='POST' action=''>{% csrf_token %}
+		{{reportForm|crispy}}
+		{{captchaForm|crispy}}
+		<div class="h-separator"></div>
+		<input class="btn btn-primary" type="submit" value="{% trans 'Send' %}" />
+	</form>
+</div>

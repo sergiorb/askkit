@@ -1,0 +1,29 @@
+{% load i18n %}
+
+<div class="comp">
+	<div class="separator-top-2em"></div>
+	<h4><strong>{% trans "Questions" %}</strong> - <span class="font-size-normal"><a href="{% url 'rand_question' %}"><strong>example</strong></a></span></h4>
+	<ul class="ul-li-margin-botton">
+		<li><strong>{% trans "Question" %}:</strong> {% trans "first of all shows up the tittle or question itself" %}.</li>
+		<li><strong>{% trans "Info" %}:</strong>
+		<ul>
+			<li><span class="label label-default">1984</span>  {% trans " it shows the number of votes in the question" %}.</li>
+			<li><span class="label label-signup-required">{% trans "Vote with registry" %}</span>  {% trans "only registered users could vote in the question" %}.</li>
+			<li><span class="label label-warning">{% trans "Context" %}</span>  {% trans "it includes some information to help other people to answer the question" %}</strong></a>.</li>
+			<li><span class="label label-info">{% trans "Chart require vote" %}</span>  {% trans "you have to vote to see the question chart" %}.</li>
+			<li><span class="label label-danger">{% trans 'Has clossing date' %}</span> {% trans "the question will be closed at certain date" %}.</li>
+		</ul>
+		</li>
+		<li><strong>{% trans 'Replies' %}:</strong> {% trans 'the different options that you can vote' %}.</li>
+	</ul>
+	</br>
+
+	{% url 'question_create' as question_create_url %}
+	<h4><strong>{% trans 'How do I make one?' %}</strong> - <span class="font-size-normal"><a href="{{question_create_url}}"><strong>go</strong></a></span></h4>
+	<p>{% blocktrans %}Making a question is very easy. You just have to look at the upper side of the web and click on <a href="{{question_create_url}}"><strong>Create question</strong></a>. You will find there any information you need to create your question{% endblocktrans %}.</p>
+	</br>
+
+	{% url 'account_login' as account_login_url %}
+	<h4><strong>{% trans 'Vote process' %}</strong></h4>
+	<p>{% blocktrans %}If you want to vote, you just have to click on one of the availables options and confirm your vote. You can vote anonymously, but if you share you internet conection, someone could have used it to vote the same question, so you should <a href="{{account_login_url}}"><strong>log in</strong></a> with your account to vote it{% endblocktrans %}.</p>
+</div>

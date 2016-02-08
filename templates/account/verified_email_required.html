@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% load staticfiles %}
+
+{% load crispy_forms_tags %}
+{% load i18n %}
+
+{% block CSS %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/core/dashboard.css' %}">
+{% endblock %}
+
+{% block head_title %}{% trans "Verify Your E-mail Address" %}{% endblock %}
+
+{% block BODY_CONTENT %}
+
+<div id="askkit-container" class="container-fluid" rel="main">
+    <div class="row dashboard-body">
+        <div class="col-md-6 col-md-offset-3">
+			<h1 class="text-grey">{% trans "Verify Your E-mail Address" %}</h1>
+
+			{% url 'account_email' as email_url %}
+
+			<p>{% blocktrans %}This part of the site requires us to verify that
+			you are who you claim to be. For this purpose, we require that you
+			verify ownership of your e-mail address. {% endblocktrans %}</p>
+
+			<p>{% blocktrans %}We have sent an e-mail to you for
+			verification. Please click on the link inside this e-mail. Please
+			contact us if you do not receive it within a few minutes.{% endblocktrans %}</p>
+
+			<p>{% blocktrans %}<strong>Note:</strong> you can still <a href="{{ email_url }}">change your e-mail address</a>.{% endblocktrans %}</p>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block JAVASCRIPT %}
+<script type="text/javascript">
+
+  $(document).ready(function(){
+    container_margin_top_handler();
+
+  });
+
+  $(window).resize(function(){
+    container_margin_top_handler();
+  });
+
+</script>
+{% endblock %}
+

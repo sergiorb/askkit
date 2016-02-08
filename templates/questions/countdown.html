@@ -1,0 +1,15 @@
+{% load tz %}
+{% load i18n %}
+
+<div id="question-countdown"></div>
+<script type="text/javascript">
+	$(function () {
+		var enddate = new Date({{question.date_end.year}}, {{question.date_end.month}}-1, {{question.date_end.day}}, {{question.date_end.hour}}, {{question.date_end.minute}}, {{question.date_end.second}});
+
+	$('#question-countdown').countdown({until: enddate, padZeroes: true, timezone:0,
+	{% blocktrans %}
+	labels: ['Years', 'Months', 'Weeks', 'Days', 'Hours', 'Minutes', 'Seconds'], 
+	labels1: ['Year', 'Month', 'Week', 'Day', 'Hour', 'Minute', 'Second'], });{% endblocktrans %}
+	});
+	
+</script>

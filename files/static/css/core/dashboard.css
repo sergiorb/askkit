@@ -1,0 +1,66 @@
+.charts {
+	margin-top: 0 !important;
+	padding-bottom: 0 !important;
+}
+
+.text-gray a {
+	color: inherit;
+}
+
+
+/*==========  Mobile First Method  ==========*/
+/* Large Devices, Wide Screens */
+@media only screen and (max-width : 1200px){
+
+}
+
+/* Medium Devices, Desktops */
+@media only screen and (max-width : 992px){
+
+	.dashboard-body {
+		margin-top: 0em;
+		margin-bottom: 0em;
+	}
+}
+
+/* Small Devices, Tablets */
+@media only screen and (max-width : 768px){
+
+ 
+}
+
+/* Extra Small Devices, Phones */
+@media only screen and (max-width : 550px){
+
+}
+
+
+/* Custom */
+@media only screen and (max-width : 400px){
+
+
+
+}
+
+/* Custom */
+@media only screen and (max-width : 360px){
+
+
+}
+
+/* Custom */
+@media only screen and (min-width : 768px){
+
+
+}
+
+@media only screen and (max-width: 768px){
+
+}
+
+
+/* Custom, iPhone Retina */
+@media only screen and (max-width : 320px){
+	
+}
+

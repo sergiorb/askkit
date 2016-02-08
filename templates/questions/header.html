@@ -1,0 +1,42 @@
+{% load static %}
+{% load staticfiles %}
+
+{% load tz %}
+{% load i18n %}
+
+{% load users_tags %}
+
+<div class="row qheader">
+
+	<div class="col-md-8 col-md-offset-2 title text-center">
+		<h1 class="text-gray">{{question}}</h1>
+		{% include 'core/components/question_labels.html' %}
+	</div>
+
+	<div class="col-md-6 col-md-offset-3 title text-center author">
+		<p>{% trans 'by' %} <a href="{% url 'public_profile' question.asker|print_anon_profile %}">{{question.asker|print_anonymous_profile}}</a></p>
+	</div>
+
+	{% if question.time_to_begin %}
+	<div class="col-md-6 col-md-offset-3 title text-center">
+		<h4>{% trans "The vote begins in" %} {{question.date_begin}}</h4>
+	</div>
+	{% endif %}
+
+	{% if question.is_active and question.time_to_end %}
+	<div class="col-md-6 col-md-offset-3 text-center countdown-section">
+		<h4>{% trans "The vote will finish in" %} {{question.date_end}}</h4>
+	</div>
+
+	<div class="col-md-6 col-md-offset-3 text-center question-countdown">
+	{% include 'questions/countdown.html' with question=question %}
+	</div>
+	
+	{% endif %}
+
+	{% if question.is_finished %}
+	<div class="col-md-6 col-md-offset-3 title text-center">
+		<h4>{% trans 'The vote finished in' %} {{question.date_end}}</h4>
+	</div>
+	{% endif %}
+</div>

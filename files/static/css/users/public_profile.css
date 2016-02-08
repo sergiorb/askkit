@@ -1,0 +1,282 @@
+/*******************/
+/* HEADER SECCTION */
+/*******************/
+
+.profile-header {
+	background-color: #fff;
+}
+.profile-landscape-wrapper {
+
+	max-height: 200px;
+}
+
+.profile-landscape {
+	position: relative;
+	width: 100%;
+}
+
+.profile-info-avatar {
+	border-radius: 8px;
+	border: 4px solid #FAFAFA;
+	position: relative;
+}
+
+.profile-info {
+	border-bottom: 1px solid #CCC;
+	border-top: 1px solid #CCC;
+}
+
+.profile-data {
+
+	margin-bottom: 0.5em;
+	margin-top: 0.6em;
+	margin-left: 0.8em;
+}
+
+.profile-data  * {
+	margin: 0;
+	padding: 0;
+}
+
+.profile-data  > span {
+
+	margin-left: 1em;
+}
+
+.profile-data.profile-data-name  span {
+
+	font-size: 0.87em;
+}
+
+.profile-data img {
+
+	height: 1.7em;
+}
+
+.label-media {
+	background-color:#949FB1;
+}
+
+/*******************/
+/*  BODY SECCTION  */
+/*******************/
+
+
+.profile-body {
+
+	padding-left: 0.4em;
+	padding-right: 0.4em;
+}
+.profile-body .jumbotron {
+	margin-top: 4.6em;
+	margin-bottom: 2.6em;
+	padding-left: 1.5em;
+	padding-right: 1.5em;
+	padding-top: 0.8em;
+	padding-bottom: 1.2em;
+}
+
+
+/**************************/
+/* QUESTION LIST SECCTION */
+/**************************/
+
+.profile-question {
+	padding-top: 0.4em;
+	padding-left: 1em;
+	padding-bottom: 1em;
+}
+
+.profile-question h2 {
+	margin: 0;
+	margin-bottom: 0.2em
+}
+
+.profile-question a {
+	color: inherit;
+}
+
+/**********************/
+/*  REWRITE SECCTION  */
+/**********************/
+
+
+/*
+.profile-body {
+	padding: 1em;
+}
+
+ ========= QUESTIONS ======================
+
+.question {
+
+	-moz-border-radius: 7px;
+	-webkit-border-radius: 7px;
+	background-color: #FFFFFF;
+	font-size: 16px;
+	padding: 1em;
+	padding-top: 0.5em;
+	padding-bottom: 0.5em;
+	text-align: justify;
+    margin-bottom: 1.5em;
+    text-decoration: none;
+    text-indent: 0.4em;
+    text-justify: inter-word;
+}
+
+.question .header .header_question h2 {
+
+	font-size: 1.8em;
+	font-weight: bold;
+	margin-bottom: 0.4em;
+}
+
+.question .header .header_info {
+
+	margin-bottom: 1em;
+}
+
+.question .header .header_info span {
+
+	float: left;
+	font-size: 0.8em;
+	margin-bottom: 0.6em;
+	margin-right: 1em;
+	padding-right: 1em;
+	padding: 0.6em;
+	text-align: center;
+}
+
+.question .edit_buttons {
+
+	margin-bottom: 1em;
+}
+
+.question a {
+	color: #333;
+	text-decoration: none;
+}
+
+.question .replies button {
+
+	margin-bottom: 0.8em;
+	margin-right: 1.8em;
+}
+
+.question .context {
+
+	margin-bottom: 0.8em;
+}
+
+.question .replies {
+
+	margin-bottom: 1.4em;
+}
+
+.question .info .publisher {
+
+	font-size: 0.8em;
+}
+
+.question .info .comments p {
+
+	float: right;
+	margin-right: 1em;
+}
+
+.question .info .comments img {
+
+	height: 1.2em;
+	margin-left: 0.5em;
+}
+
+#canvas-holder {
+
+	left: -1em;
+}
+
+.comment {
+
+	background-color: #F5F5F5;
+}
+
+.comment .avatar {
+
+	border-radius: 20%;
+	height: 55px;
+	margin-right: 0.3em;
+	width: 55px;
+}
+
+.comment .name {
+
+	font-size: 1.2em;
+	margin-right: 0.5em;
+}
+
+.comment .name a {
+
+	color: #333;
+}*/
+
+/* ========= CAROUSEL ======================
+
+.row .carousel {
+
+	margin: 0 auto;
+}
+*/
+
+/*==========  Mobile First Method  ==========*/
+/* Large Devices, Wide Screens */
+@media only screen and (max-width : 1200px){
+
+}
+
+/* Medium Devices, Desktops */
+@media only screen and (max-width : 992px){
+}
+
+/* Small Devices, Tablets */
+@media only screen and (max-width : 768px){
+	.profile-info {
+		border-bottom: 3px solid #CCC;
+	}
+
+	.profile-question {
+		margin-top: 0;
+	}
+
+}
+
+/* Custom */
+@media only screen and (max-width : 560px){
+
+
+}
+
+/* Extra Small Devices, Phones */
+@media only screen and (max-width : 480px){
+
+
+}
+
+
+/* Custom */
+@media only screen and (max-width : 400px){
+
+
+
+}
+
+/* Custom */
+@media only screen and (max-width : 360px){
+
+}
+
+/* Custom, iPhone Retina */
+@media only screen and (max-width : 320px){
+
+
+}
+

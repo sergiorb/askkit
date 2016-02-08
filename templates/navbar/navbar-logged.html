@@ -1,0 +1,43 @@
+{% load staticfiles %}
+
+{% load i18n %}
+<div class="container-fluid">
+	<div class="navbar-header">
+
+		<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-1" aria-expanded="false">
+		<span class="sr-only">Toggle navigation</span>
+		<span class="icon-bar"></span>
+		<span class="icon-bar"></span>
+		<span class="icon-bar"></span>
+		</button>
+
+		<a class="navbar-brand" href="{% url 'dashboard' %}">Askkit</a>
+	</div>
+
+	<!-- Collect the nav links, forms, and other content for toggling -->
+	<div class="collapse navbar-collapse" id="navbar-collapse-1">
+
+		<ul class="nav navbar-nav">
+			<li><a href="{% url 'rand_question' %}">{% trans 'Random question' %}</a></li>
+			<li><a href="{% url 'question_create' %}">{% trans 'Create question' %}</a></li>
+
+			{% if pro_owns_ques %}
+			<li><a class="question-update-btn" href="{% url 'question_update' question.asker question.token %}">{% trans 'Edit this question' %}</a></li>
+			{% endif %}
+			
+		</ul>
+
+		<ul class="nav navbar-nav navbar-right">
+			<li class="dropdown">
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{user}} <span class="caret"></span></a>
+				<ul class="dropdown-menu">
+					<li><a href="{% url 'public_profile' user %}">{% trans 'My Profile' %}</a></li>
+					<li><a href="{% url 'profile_edit' %}">{% trans 'Edit my profile' %}</a></li>
+					<li><a href="{% url 'account_logout' %}">{% trans 'Salir' %}</a></li>
+				</ul>
+			</li>
+		</ul>
+	</div><!-- /.navbar-collapse -->
+</div><!-- /.container-fluid -->
+
+

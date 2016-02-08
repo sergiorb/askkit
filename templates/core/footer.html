@@ -1,0 +1,24 @@
+{% load i18n %}
+
+<div id="footer">
+  <div class="container">
+  	<div class="row">
+  		<div class="col-md-6">
+  			<ul class="list-unstyled">
+  				<li class=""><a href="{% url 'about' %}">{% trans 'About' %} Askkit</a></li>
+  				<li class=""><a href="{% url 'contact' %}">{% trans 'Contact' %}</a></li>
+  				<li class=""><a href="{% url 'private_policy' %}">{% trans 'Privacy Policy' %}</a></li>
+          <li><a href="" data-toggle="modal" data-target="#askkit_settings_modal">{% trans 'Settings' %}</a></li>
+  			</ul>
+  		</div>
+  	</div>
+
+    <div class="col-md-12 h-separator" ></div>
+
+    <div class="row">
+	  	<div class="col-md-12 text-center">
+	    	<p class="">Copyright ©2015 Askkit</p>
+	    </div>
+    </div>
+  </div>
+</div>

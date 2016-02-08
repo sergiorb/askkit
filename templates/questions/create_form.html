@@ -1,0 +1,36 @@
+{% load tz %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+<div class="comp comp-question-create">
+	<form id="mqForm" class="mqForm" method='POST' action='' enctype="multipart/form-data">{% csrf_token %}
+		{{makeQuestionForm|crispy}}
+		{{makeReplyFormSet|crispy}}
+		{{captchaForm|crispy}}
+		
+		{% if not request_user %}
+		{% url 'account_signup' as sigup_url %}
+		{% blocktrans %}
+		<p class="alert alert-info"><a class="alert-link" href="{{sigup_url}}">Sign up</a> to get more replies!</p>
+		{% endblocktrans %}
+		{% elif replies >= max_replies %}
+		<p class="alert alert-info">{% trans 'You have reached your current max. replies number per question.' %}</p>
+		{% endif %}
+
+		<div class="h-separator"></div>
+		<button id="mqFormSendBtn" class="btn btn-primary" type="button" data-toggle="modal" data-target="#qumo-create">{% trans 'Create' %}</button>
+
+		{% if replies < max_replies %}
+		<input class="btn btn-default" type="submit"  name="add_reply-{{replies}}" value="Add reply" />
+		{% else %}
+		<button id='addReplyBtn' class="btn btn-default" type="button" disabled="disabled">Add reply</button>
+		{% endif %}
+
+		{% if replies > 2 %}
+		<input class="btn btn-default" type="submit" name="delete_reply-{{replies}}" value="Delete Reply" />
+		{% else %}
+		<button class="btn btn-default" type="button" disabled="disabled">Delete Reply</button>
+		{% endif %}
+
+	</form>
+</div>

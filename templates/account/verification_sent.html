@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% load staticfiles %}
+
+{% load crispy_forms_tags %}
+{% load i18n %}
+
+{% block CSS %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/core/dashboard.css' %}">
+{% endblock %}
+
+{% block head_title %}{% trans "Verify Your E-mail Address" %}{% endblock %}
+
+{% block BODY_CONTENT %}
+
+<div id="askkit-container" class="container-fluid" rel="main">
+    <div class="row dashboard-body">
+        <div class="col-md-6 col-md-offset-3">
+            <h1 class="text-grey">{% trans "Verify Your E-mail Address" %}</h1>
+            <p>{% blocktrans %}We have sent an e-mail to you for verification. Follow the link provided to finalize the signup process. Please contact us if you do not receive it within a few minutes.{% endblocktrans %}</p>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block JAVASCRIPT %}
+<script type="text/javascript">
+
+  $(document).ready(function(){
+    container_margin_top_handler();
+
+  });
+
+  $(window).resize(function(){
+    container_margin_top_handler();
+  });
+
+</script>
+{% endblock %}
+

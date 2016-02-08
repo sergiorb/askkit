@@ -1,0 +1,5 @@
+<select id="timezone" class="form-control">
+	{% for timezone in common_timezones%}
+	<option timeZoneStr="{{timezone}}">{{timezone}}</option>
+	{% endfor %}
+</select>

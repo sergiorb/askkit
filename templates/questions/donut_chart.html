@@ -1,0 +1,42 @@
+{% load i18n %}
+
+{% url 'dashboard' as url_dashboard %}
+
+<div id="chart-parent" class="row charts">
+	<div id="canvas-holder" class="{% if not request.path == url_dashboard %}col-md-4{% else %}col-md-6{% endif %}">
+		<canvas id="chart-area" />
+	</div>
+	<div id="chart-data" class="col-md-6 info">
+		<table class="table table-striped table-condensed table_replies_votes">
+			<thead>
+		        <tr>
+		            <th>{% trans 'Reply' %}</th>
+		            <th>{% trans 'Colour' %}</th>
+		            <th>{% trans 'Votes' %}</th>
+		            <th>%</th>
+		        </tr>
+		    </thead>
+			{% for reply in replies_ordered %}
+			<tr>
+				<td>{{reply}}</td>
+				<td><span class="show_color" style="background-color:{{reply.color}}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td>
+				<td>{{reply.hits}}</td>
+				<td>{{reply.percentage|floatformat:2}}%</td>
+			</tr>
+			{% endfor %}
+		</table>
+	</div>
+</div>
+
+<script type="text/javascript">
+
+	$(document).ready(function(){
+
+		var doughnutData = [{% for reply in replies %}{ value:{{reply.hits}}, color: "{{reply.color}}", highlight: "{{reply.color}}", label:"{{reply.replyText}}" },{% endfor %}];
+		var ctx = document.getElementById("chart-area").getContext("2d");
+		window.myDoughnut = new Chart(ctx).Doughnut(doughnutData, {responsive : true});
+
+	});
+
+</script>
+

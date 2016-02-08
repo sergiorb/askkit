@@ -1,0 +1,40 @@
+{% load tz %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+<div class="panel panel-info askkit-collapse" data-mobhidden="true"> 
+    <div class="panel-heading">
+        <h4 class="panel-title">
+            <a class="panel-toggle">
+            <span id="glyphicon-minus" class="glyphicon glyphicon-book" aria-hidden="true"></span>
+            {% trans 'Explanation' %}
+            <span id="glyphicon-minus" class="glyphicon glyphicon-minus float-right" aria-hidden="true"></span>
+            <span id="glyphicon-plus" class="glyphicon glyphicon-plus float-right" aria-hidden="true"></span>
+            </a>
+        </h4>
+    </div>
+    <div class="panel-collapse collapse">
+        <div class="panel-body">
+          <p><strong>{% trans 'Question title:</strong> you can write here the title for your question. You should be specific with the title, like: "White and gold or black and blue?"' %}.</p>
+         
+          <p><strong>{% trans 'Write something more:</strong> you can explain here your question and include some information to help other people to answer your question' %}.</p>
+          <p>{% trans 'In case your answers are very long, you may use this field to explain them carefully and give them a shorter name, like a letter or number' %}.</p>
+         
+          <p><strong>{% trans 'Open vote on' %}:</strong> select a date to open the vote. No one could vote before this date.</p>
+          
+          <p><strong>{% trans 'Close vote on' %}:</strong> select a date to close the vote. No one could vote after this date.</p>
+          
+          <p><strong>{% trans 'Allow anonymous vote' %}:</strong> disable this option if you want that only registered users could vote this question.</p>
+          <p>{% trans 'This way you get more accurate results as you avoid that the same user could vote both from his account and anonymously' %}.</p>
+          
+          <p><strong>{% trans "Require vote to show charts:</strong> disable this option if you don't want that other users have to vote to see the question chart" %}.</p>
+          
+          {% url 'rand_question' as rand_question_url %}
+          <p><strong>{% trans "Shown in 'Random question'" %}:</strong>  {% blocktrans %}the question will be available through <a href="{{rand_question_url}}"><strong>random question</strong></a> button for anyone{% endblocktrans %}.</p>
+          
+          {% url 'account_signup' as account_signup_url %}
+          <p><strong>{% trans 'Replies' %}:</strong> {% blocktrans %}these are the different options you give other users to vote. If you don't want or don't have anything to add to your question, you can leave them blank. You could add them later provided that you have already <a href="{{account_signup_url}}"><strong>signed up</strong></a>{% endblocktrans %}.</p>
+          
+          <p><strong>Captcha:</strong> {% trans "Askkit doesn't like robots; they search for anything everywhere and, finally, break things. Just let us know that you're not one of them" %}.</p>
+        </div>
+    </div>
+</div>

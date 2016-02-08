@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load staticfiles %}
+
+{% load crispy_forms_tags %}
+{% load i18n %}
+
+{% block CSS %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/core/about.css' %}">
+{% endblock %}
+
+{% block BODY_CONTENT %}
+
+<div id="askkit-container" class="container-fluid" rel="main">
+
+	<div class="row about-body">
+		<div class="col-md-12">
+			{% include 'core/components/welcome.html' %} 
+			{% include 'core/components/howto.html' %} 
+		</div>
+		
+		<div class="col-md-6">
+			{% include 'core/components/it.html' %} 
+		</div>
+		<div class="col-md-6">
+			{% include 'core/components/thanks.html' %} 
+		</div>
+			
+	</div>
+
+</div>
+
+{% endblock %}
+
+{% block JAVASCRIPT %}
+<script type="text/javascript">
+
+	$(document).ready(function(){
+		container_margin_top_handler();
+
+	});
+
+	$(window).resize(function(){
+		container_margin_top_handler();
+	});
+
+</script>
+{% endblock %}

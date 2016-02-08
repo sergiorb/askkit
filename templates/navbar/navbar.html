@@ -1,0 +1,8 @@
+<nav id="askkit-navbar" class="navbar navbar-default navbar-fixed-top askkit-navbar">
+
+{% if user.is_anonymous %}
+{% include 'navbar/navbar-no-logged.html' %}
+{% else %}
+{% include 'navbar/navbar-logged.html' %}
+{% endif %}
+</nav>

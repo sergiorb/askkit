@@ -1,0 +1,148 @@
+{% load staticfiles %}
+{% load i18n %}
+{% load compress %}
+{% get_current_language as CURRENT_LANGUAGE_CODE %}
+
+
+<!DOCTYPE html>
+<html lang="{{CURRENT_LANGUAGE_CODE}}">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Askkit {% block TITLE %}{% endblock %}</title>
+
+    <link rel="shortcut icon" type="image/png" href="{% static 'imgs/favicon_01.png' %}"/>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Jquery-ui CSS -->
+    <link rel="stylesheet" type="text/css" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.min.css">
+    <!-- Font-awesome -->
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <!-- Bootstrap-social -->
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-social/4.10.1/bootstrap-social.min.css">
+    <!-- APP -->
+    <link href="{% static 'css/app.css' %}" rel="stylesheet">
+
+    {% block APP_CSS %}
+    {% endblock %}
+
+    {% block CSS %}
+    {% endblock %}
+
+    
+    <!-- jQuery JS-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <!-- Begin Cookie Consent plugin by Silktide - http://silktide.com/cookieconsent -->
+    <script type="text/javascript">
+        window.cookieconsent_options = {"message":"{% trans 'This website uses cookies to ensure you get the best experience' %}","dismiss":"{% trans 'Got it!' %}","learnMore":"{% trans 'More info' %}","link":"{% url 'private_policy' %}#cookies","theme":"dark-floating"};
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/1.0.9/cookieconsent.min.js"></script>
+    <!-- End Cookie Consent plugin -->
+
+  </head>
+  <body>
+
+    {% include 'analytics/tracking.html' %}
+
+    <div class="body-wrapper">
+        {% include 'navbar/navbar.html' with user=user %}
+        {% block BODY_CONTENT %}
+        {% endblock %}
+    </div>
+
+    {% include 'core/footer.html' %}
+
+    {% include 'settings/settings_selector.html' %}
+    
+    <!-- Bootstrap -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <!-- Jquery-UI JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+    <!-- CHART JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
+    <!-- Jquery-cookie JS -->
+    <script src="{% static 'js/jquery.cookie.js' %}"></script>
+    <!-- COUNTDOWN JS -->
+    <script src="{% static 'js/countdown/jquery.plugin.js' %}"></script>
+    <script src="{% static 'js/countdown/jquery.countdown.js' %}"></script>
+    <!-- APP JS -->
+    <script src="{% static 'js/app.js' %}"></script>
+
+
+    <script type="text/javascript">
+
+        function csrfSafeMethod(method) {
+            // these HTTP methods do not require CSRF protection
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
+
+        $.ajaxSetup({
+            beforeSend: function(xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", $.cookie('csrftoken'));
+                }
+            }
+        });
+
+        function settings() {
+
+            var modal = $('#askkit_settings_modal');
+
+            function check_settings() {
+
+                timezone = $.cookie("askkit_timezone");
+                //lang = $.cookie("askkit_language");
+
+                //if(timezone==null || lang==null) {
+                if(timezone==null) {
+                    $('#askkit_settings_modal').modal();
+                } else {
+                    modal.find('#timezone option').filter(function() {
+                        //may want to use $.trim in here
+                        return $(this).attr('timeZoneStr') == timezone; 
+                    }).prop('selected', true);
+                    /*modal.find('#lang option').filter(function() {
+                        //may want to use $.trim in here
+                        return $(this).attr('langCode') == lang; 
+                    }).prop('selected', true);*/
+                }
+            }
+
+            function save_settings() {
+
+                var btn_save = modal.find('#save');
+                
+                btn_save.click(function(){
+                    var timezone_field = modal.find('#timezone option:selected');
+                    //var lang_field = modal.find('#lang option:selected');
+                    $.cookie("askkit_timezone", timezone_field.attr('timeZoneStr'), { path: '/', expires: 365, });
+                    
+                    //$.cookie("askkit_language", lang_field.attr('langCode'), { path: '/', expires: 365, });
+                    location.reload();
+                });
+            }
+
+            check_settings();
+            save_settings();
+        }
+
+        settings();
+    </script>
+
+    {% block APP_JAVASCRIPT %}
+    {% endblock %}
+
+    {% block JAVASCRIPT %}
+    {% endblock %}
+  </body>
+</html>

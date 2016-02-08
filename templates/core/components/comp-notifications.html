@@ -1,0 +1,22 @@
+{% load core_filters %}
+{% load i18n %}
+
+<div class="comp-notifications">
+	{% for notification in notifications %}
+	<div class="panel panel-{{notification.style|style|lower}} comp-notification">
+		<div class="panel-heading">{{notification.date|date:"SHORT_DATE_FORMAT"}} - {% trans notification.tittle  %}</div>
+		{% if notification.message %}
+		<div class="panel-body">
+			{% trans notification.message %}
+		</div>
+		{% endif %}
+	</div>
+	{% empty %}
+	<div class="jumbotron">
+		<div class="row text-center">
+			<h2 class="text-muted">{% trans "You haven't got any notifications at the moment" %}.</h2>
+		</div>
+	</div>
+	{% endfor %}
+	
+</div>

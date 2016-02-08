@@ -1,0 +1,20 @@
+{% load tz %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+<div class="panel panel-danger askkit-collapse" data-mobhidden="true">
+    <div class="panel-heading">
+        <h4 class="panel-title">
+            <a class="panel-toggle">
+            <span id="glyphicon-plus" class="glyphicon glyphicon-fire" aria-hidden="true"></span>
+            {% trans 'Danger Zone' %}
+            <span id="glyphicon-minus" class="glyphicon glyphicon-minus float-right" aria-hidden="true"></span>
+            <span id="glyphicon-plus" class="glyphicon glyphicon-plus float-right" aria-hidden="true"></span>
+            </a>
+        </h4>
+    </div>
+    <div class="panel-collapse collapse">
+        <div class="panel-body">
+            <a class="btn btn-danger" href="{% url 'account_reset_password' %}">{% trans 'Reset password' %}</a>
+        </div>
+    </div>
+</div>

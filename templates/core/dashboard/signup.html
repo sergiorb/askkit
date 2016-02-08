@@ -1,0 +1,15 @@
+{% load static %}
+{% load staticfiles %}
+
+{% load crispy_forms_tags %}
+{% load i18n %}
+
+<div class="comp comp-signup">
+	<h1 class="text-gray">Sign up</h1>
+	<form id="signupForm" class="mqForm" method='POST' action='' enctype="multipart/form-data">{% csrf_token %}
+		{{signupUserFrom|crispy}}
+		{{signupProfileForm|crispy}}
+		<div class="h-separator"></div>
+		<input id="signupBtn" class="btn btn-primary" type="submit" value="{% trans 'Sign up' %}">
+	</form>
+</div>
