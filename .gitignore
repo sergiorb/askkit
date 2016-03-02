@@ -3,6 +3,7 @@
 
 # Databases
 database*
+db*
 
 # Logs
 *.log
