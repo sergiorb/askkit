@@ -5,17 +5,24 @@ from django.views.generic.list import ListView
 from django.http import HttpResponseRedirect
 
 from .models import Question
-from questions.tasks import reply_add_vote, reply_subtract_vote, reply_random_vote, reply_random_vote_async
+from questions.tasks import reply_add_vote, reply_subtract_vote
+from questions.tasks import reply_random_vote, reset_question_votes
 
 # Create your views here.
 
 class QuestionListView(ListView):
+	"""
+		Renders a simple question list with voting methods.
+	"""
 
 	model = Question
 	template_name = "questions/list.html"
 
 
 class AddVote(View):
+	"""
+		Adds a vote to given reply id.
+	"""
 
 	def post(self, request, *args, **kwargs):
 
@@ -25,6 +32,10 @@ class AddVote(View):
 		
 
 class SubtractVote(View):
+	"""
+		Subtracts a vote from given reply id.
+	"""
+
 	def post(self, request, *args, **kwargs):
 
 		reply_subtract_vote.delay(self.request.POST['id'])
@@ -33,6 +44,10 @@ class SubtractVote(View):
 		
 
 class RandomVote(View):
+	"""
+		Makes given number votes to given question id.
+	"""
+
 	def post(self, request, *args, **kwargs):
 
 		reply_random_vote.delay(self.request.POST['id'], int(self.request.POST['number']))
@@ -40,9 +55,13 @@ class RandomVote(View):
 		return HttpResponseRedirect(reverse('question_list'))
 
 
-class RandomVoteAsync(View):
+class ResetQuestionVotes(View):
+	"""
+		Resets question and its replies to 0 votes.
+	"""
+
 	def post(self, request, *args, **kwargs):
 
-		reply_random_vote_async.delay(self.request.POST['id'], int(self.request.POST['number']))
+		reset_question_votes.delay(self.request.POST['id'])
 
 		return HttpResponseRedirect(reverse('question_list'))

@@ -2,46 +2,46 @@
 
 <hr>
 
-<ul>
 {% for question in object_list %}
+<ul>
     <li>{{ question.short_question }} - Replies count: {{ question.replies_count }} - Total votes: {{ question.total_votes }}
-    <li>
-    	<form action="randomvote/" method="post">{% csrf_token %}
-			<input  type="number" name="number" value="100">
-			<input type="hidden" name="id" value="{{ question.pk }}">
-			<input type="submit" value="Random votation">
-		</form>
+	    <li> Actions:
+	    	<form action="randomvote/" method="post">{% csrf_token %}
+				<input  type="number" name="number" value="100">
+				<input type="hidden" name="id" value="{{ question.pk }}">
+				<input type="submit" value="Random votation">
+			</form>
 
-		<form action="randomvoteasync/" method="post">{% csrf_token %}
-			<input  type="number" name="number" value="100">
-			<input type="hidden" name="id" value="{{ question.pk }}">
-			<input type="submit" value="Random votation async">
-		</form>
-    </li>
-    <li>Replies:
-    	<ul>
-    		{% for reply in question.replies.all %}
-            <li>
-            	{{ reply }} - {{ reply.vote_quantity }}
+			<form action="resetquestionvotes/" method="post">{% csrf_token %}
+				<input type="hidden" name="id" value="{{ question.pk }}">
+				<input type="submit" value="Reset votes">
+			</form>
+	    </li>
+	    <li>Replies:
+	    	<ul>
+	    		{% for reply in question.replies.all %}
+	            <li>
+	            	{{ reply }} - {{ reply.vote_quantity }}
 
-            	<ul>
-	    			<li>
-			            <form action="addvote/" method="post">{% csrf_token %}
-			    			<input type="hidden" name="id" value="{{ reply.pk }}">
-							<input type="submit" value="Add vote">
-						</form>
-						<form action="subtractvote/" method="post">{% csrf_token %}
-			    			<input  type="hidden" name="id" value="{{ reply.pk }}">
-							<input type="submit" value="Subtract vote">
-						</form>
-					</li>
-				</ul>
-			</li>
-			{% endfor %}
-        </ul>
+	            	<ul>
+		    			<li>
+				            <form action="addvote/" method="post">{% csrf_token %}
+				    			<input type="hidden" name="id" value="{{ reply.pk }}">
+								<input type="submit" value="Add vote">
+							</form>
+							<form action="subtractvote/" method="post">{% csrf_token %}
+				    			<input  type="hidden" name="id" value="{{ reply.pk }}">
+								<input type="submit" value="Subtract vote">
+							</form>
+						</li>
+					</ul>
+				</li>
+				{% endfor %}
+	        </ul>
+	    </li>
     </li>
-    </li>
-{% empty %}
-    <li>No questions yet.</li>
-{% endfor %}
+    <hr>
 </ul>
+{% empty %}
+    <p>No questions yet.</p>
+{% endfor %}

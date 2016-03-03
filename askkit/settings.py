@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 
 import os
 
+# Celery imports
+from kombu import Exchange, Queue
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -20,12 +23,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '4f2d%gm0&1dpl46s&$^rki+(2jf47471)*ot*)l*h@my9_!#*f'
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*',]
 
 
 # Application definition
@@ -74,11 +77,14 @@ WSGI_APPLICATION = 'askkit.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
-
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+     'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': os.environ.get('DB_NAME'),
+        'HOST': os.environ.get('DB_HOST'),
+        'PORT': os.environ.get('DB_PORT'),
+        'USER': os.environ.get('DB_USER'),
+        'PASSWORD': os.environ.get('DB_PASSWORD'),
     }
 }
 
@@ -108,5 +114,28 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+
 # Celery config
-BROKER_URL = 'redis://localhost:6379/0'
+
+# celery multi start -A askkit.celery default questions -Q:default default \
+# -Q:questions questions -c:default 8 -c:questions 1
+
+BROKER_URL = os.environ.get('CELERY_BROKER_URL')
+
+CELERY_DEFAULT_QUEUE = 'default'
+
+CELERY_QUEUES = (
+    Queue('default', Exchange('default'), routing_key='default'),
+)
+
+CELERY_ROUTES = {
+    'questions.tasks.reply_add_vote': {
+        'queue': 'questions',
+    },
+    'questions.tasks.reply_subtract_vote': {
+        'queue': 'questions',
+    },
+    'questions.tasks.reset_question_votes': {
+        'queue': 'questions',
+    }
+}

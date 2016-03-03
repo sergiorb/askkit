@@ -18,10 +18,6 @@ class Question(models.Model):
 	owner = models.ForeignKey(settings.AUTH_USER_MODEL, 
 		related_name='profile')
 	
-	#allow_anonymous_voter = models.BooleanField(default=True)
-	#data_require_vote = models.BooleanField(default=True)
-	#fromIp = models.GenericIPAddressField(blank=True, null=True)
-	#hide_data = models.BooleanField(default=False)
 	added_on = models.DateTimeField(auto_now_add=True)
 	context = models.TextField(blank=True, null=True)
 	date_begin = models.DateTimeField(default=timezone.now)
@@ -124,7 +120,6 @@ class Reply(models.Model):
 		editable=False)
 	question = models.ForeignKey(Question, related_name='replies')
 
-	#color = models.CharField(max_length=7, blank = True, null = True)
 	added_on = models.DateTimeField(auto_now_add=True)
 	replyText = models.CharField(max_length=140)
 	vote_quantity = models.PositiveIntegerField(default=0)	
