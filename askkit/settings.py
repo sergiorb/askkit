@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'questions',
+    'rest_framework',
+    'api',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -114,6 +116,17 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+# General statics
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+]
+
+
+# Media files
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+
 
 # Celery config
 
@@ -121,6 +134,8 @@ STATIC_URL = '/static/'
 # -Q:questions questions -c:default 8 -c:questions 1
 
 BROKER_URL = os.environ.get('CELERY_BROKER_URL')
+
+CELERY_RESULT_BACKEND = os.environ.get('CELERY_RESULT_BACKEND')
 
 CELERY_DEFAULT_QUEUE = 'default'
 
@@ -138,4 +153,16 @@ CELERY_ROUTES = {
     'questions.tasks.reset_question_votes': {
         'queue': 'questions',
     }
+}
+
+
+# REST Framework
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ],
+    'EXCEPTION_HANDLER': 'api.exceptions.status_code_exception_handler'
 }

@@ -7,3 +7,6 @@ db*
 
 # Logs
 *.log
+
+# Celery
+*.pid
