@@ -1,26 +1,26 @@
 from django.contrib import admin
 
-from .models import Question, Reply
+from .models import Poll, Option
 
 # Register your models here.
 
-class ReplyInline(admin.TabularInline):
-	model = Reply
+class OptionInline(admin.TabularInline):
+	model = Option
 
 
-class QuestionAdmin(admin.ModelAdmin):
+class PollAdmin(admin.ModelAdmin):
 
 	def is_active(self, obj):
 		return obj.is_active()
 
-	def short_question(self, obj):
-		return obj.short_question()
+	def short_title(self, obj):
+		return obj.short_title()
 
 	def replies_count(self, obj):
 		return obj.replies_count()
 
 	fields = (
-		'question', 
+		'title', 
 		'context',
 		'added_on',
 		'date_begin',
@@ -35,7 +35,7 @@ class QuestionAdmin(admin.ModelAdmin):
 	)
 
 	list_display = (
-		'short_question',
+		'short_title',
 		'added_on',
 		'date_begin',
 		'date_end',
@@ -56,20 +56,20 @@ class QuestionAdmin(admin.ModelAdmin):
 	)
 
 	inlines = [
-		ReplyInline,
+		OptionInline,
 	]
 
 
-class ReplyAdmin(admin.ModelAdmin):
+class OptionAdmin(admin.ModelAdmin):
 
 	def percentage(self, obj):
 		return obj.percentage()
 
 	fields = (
-		'replyText',
+		'optionText',
 		'vote_quantity',
 		'added_on',
-		'question', 
+		'poll', 
 	)
 
 	readonly_fields = (
@@ -77,10 +77,10 @@ class ReplyAdmin(admin.ModelAdmin):
 	)
 
 	list_display = (
-		'replyText',
+		'optionText',
 		'vote_quantity',
 		'added_on',
-		'question', 
+		'poll', 
 	)
 
 	list_filter = (
@@ -91,5 +91,5 @@ class ReplyAdmin(admin.ModelAdmin):
 		'added_on',
 	)
 
-admin.site.register(Question, QuestionAdmin)
-admin.site.register(Reply, ReplyAdmin)
+admin.site.register(Poll, PollAdmin)
+admin.site.register(Option, OptionAdmin)

@@ -8,10 +8,9 @@ from django.conf import settings
 from django.utils import timezone
 from django.db import models, IntegrityError, transaction
 
-
 # Create your models here.
 
-class Question(models.Model):
+class Poll(models.Model):
 
 	id = models.UUIDField(primary_key=True, default=uuid.uuid4, 
 		editable=False)
@@ -23,23 +22,23 @@ class Question(models.Model):
 	date_begin = models.DateTimeField(default=timezone.now)
 	date_end = models.DateTimeField(blank=True, null=True)
 	public = models.BooleanField(default=True)
-	question = models.CharField(max_length=140)
+	title = models.CharField(max_length=140)
 	total_votes = models.IntegerField(default=0)
 
 	def __unicode__(self):
-		return self.question
+		return self.title
 
-	def short_question(self):
+	def short_title(self):
 		"""
-			Returns a fragment of question string if it's greater than 
+			Returns a fragment of title string if it's greater than 
 			max_length.
 		"""
 		max_length = 30
 
-		if len(self.question) > max_length:
-			return '%s...' % self.question[:max_length]
+		if len(self.title) > max_length:
+			return '%s...' % self.title[:max_length]
 		else:
-			return self.question
+			return self.title
 
 	def is_active(self):
 		"""
@@ -59,7 +58,7 @@ class Question(models.Model):
 
 	def has_end(self):
 		"""
-			Returns true when question has an end date.
+			Returns true when poll has an end date.
 		"""
 		if self.date_end:
 			return True
@@ -95,7 +94,7 @@ class Question(models.Model):
 
 	def is_finished(self):
 		"""
-			Returns True if the question has an end date and current time is
+			Returns True if the poll has an end date and current time is
 			above end date.
 		"""
 
@@ -106,45 +105,46 @@ class Question(models.Model):
 		else:
 			return False
 
-	def replies_count(self):
+	def options_count(self):
 		"""
-			Returns the count of related replies. 
+			Returns the count of related options. 
 		"""
 
-		return self.replies.count()
+		return self.options.count()
 
 
-class Reply(models.Model):
+class Option(models.Model):
 
 	id = models.UUIDField(primary_key=True, default=uuid.uuid4, 
 		editable=False)
-	question = models.ForeignKey(Question, related_name='replies')
+	poll = models.ForeignKey(Poll, related_name='options')
 
 	added_on = models.DateTimeField(auto_now_add=True)
-	replyText = models.CharField(max_length=140)
+	optionText = models.CharField(max_length=140)
 	vote_quantity = models.PositiveIntegerField(default=0)	
 
 	def __unicode__(self):
-		return self.replyText
+		return self.optionText
 	
 	# To TASK
 	def delete(self, *args, **kwargs):
 		
 		try:
 			with transaction.atomic():
-				self.question.total_votes -= self.vote_quantity
-				self.question.save()
-				super(Reply, self).delete(*args, **kwargs)
+				self.poll.total_votes -= self.vote_quantity
+				self.poll.save()
+				super(Option, self).delete(*args, **kwargs)
 		except IntegrityError:
 			pass
 
 	def percentage(self):
 		"""
-			Returns the reply percentaje based in the question total votes and
-			reply votes
+			Returns the option percentaje based in the poll total votes and
+			option votes
 		"""
 
-		total_votes = self.question.total_votes
-		percentage = (self.hits * 100) / total_votes or 0
-			
-		return percentage
+		total_votes = self.poll.total_votes
+
+		percentage = (self.vote_quantity * 100.0) / total_votes
+
+		return round(percentage,2)

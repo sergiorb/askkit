@@ -1,25 +1,25 @@
-<h1>Questions</h1>
+<h1>Polls</h1>
 
 <hr>
 
-{% for question in object_list %}
+{% for poll in object_list %}
 <ul>
-    <li>{{ question.short_question }} - Replies count: {{ question.replies_count }} - Total votes: {{ question.total_votes }}
+    <li>{{ poll.short_title}} - Options count: {{ poll.options_count }} - Total votes: {{ poll.total_votes }}
 	    <li> Actions:
 	    	<form action="randomvote/" method="post">{% csrf_token %}
 				<input  type="number" name="number" value="100">
-				<input type="hidden" name="id" value="{{ question.pk }}">
+				<input type="hidden" name="id" value="{{ poll.pk }}">
 				<input type="submit" value="Random votation">
 			</form>
 
-			<form action="resetquestionvotes/" method="post">{% csrf_token %}
-				<input type="hidden" name="id" value="{{ question.pk }}">
+			<form action="resetpollvotes/" method="post">{% csrf_token %}
+				<input type="hidden" name="id" value="{{ poll.pk }}">
 				<input type="submit" value="Reset votes">
 			</form>
 	    </li>
-	    <li>Replies:
+	    <li>Options:
 	    	<ul>
-	    		{% for reply in question.replies.all %}
+	    		{% for reply in poll.options.all %}
 	            <li>
 	            	{{ reply }} - {{ reply.vote_quantity }}
 
@@ -43,5 +43,5 @@
     <hr>
 </ul>
 {% empty %}
-    <p>No questions yet.</p>
+    <p>No polls yet.</p>
 {% endfor %}

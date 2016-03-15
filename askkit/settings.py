@@ -40,8 +40,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'questions',
+    'core',
+    'polls',
     'rest_framework',
+    'rest_framework_swagger',
     'api',
 ]
 
@@ -130,8 +132,10 @@ MEDIA_URL = '/media/'
 
 # Celery config
 
-# celery multi start -A askkit.celery default questions -Q:default default \
-# -Q:questions questions -c:default 8 -c:questions 1
+# celery multi start -A askkit.celery default polls -Q:default default \
+# -Q:polls polls -c:default 8 -c:polls 1
+
+#CELERY_ACCEPT_CONTENT = ['json',]
 
 BROKER_URL = os.environ.get('CELERY_BROKER_URL')
 
@@ -144,14 +148,14 @@ CELERY_QUEUES = (
 )
 
 CELERY_ROUTES = {
-    'questions.tasks.reply_add_vote': {
-        'queue': 'questions',
+    'polls.tasks.option_add_vote': {
+        'queue': 'polls',
     },
-    'questions.tasks.reply_subtract_vote': {
-        'queue': 'questions',
+    'polls.tasks.option_subtract_vote': {
+        'queue': 'polls',
     },
-    'questions.tasks.reset_question_votes': {
-        'queue': 'questions',
+    'polls.tasks.reset_poll_votes': {
+        'queue': 'polls',
     }
 }
 
