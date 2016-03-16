@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Poll, Option
+from .models import Poll, Option, OptionVotedByUser
 
 # Register your models here.
 
@@ -16,8 +16,8 @@ class PollAdmin(admin.ModelAdmin):
 	def short_title(self, obj):
 		return obj.short_title()
 
-	def replies_count(self, obj):
-		return obj.replies_count()
+	def options_count(self, obj):
+		return obj.options_count()
 
 	fields = (
 		'title', 
@@ -26,6 +26,7 @@ class PollAdmin(admin.ModelAdmin):
 		'date_begin',
 		'date_end',
 		'public',
+		'anon_allowed',
 		'owner',
 		'total_votes',
 	)
@@ -40,7 +41,7 @@ class PollAdmin(admin.ModelAdmin):
 		'date_begin',
 		'date_end',
 		'is_active',
-		'replies_count',
+		'options_count',
 		'total_votes',
 		'public',
 	)
@@ -91,5 +92,33 @@ class OptionAdmin(admin.ModelAdmin):
 		'added_on',
 	)
 
+class OptionVotedByUserAdmin(admin.ModelAdmin):
+
+	fields = (
+		'id',
+		'user', 
+		'option',
+		'fromIp',
+		'date',
+	)
+
+	readonly_fields = (
+		'id',
+		'date',
+	)
+
+	list_display = (
+		'user',
+		'option',
+		'fromIp',
+		'date',
+	)
+	
+	search_fields = (
+		'fromIp',
+	)
+
+
 admin.site.register(Poll, PollAdmin)
 admin.site.register(Option, OptionAdmin)
+admin.site.register(OptionVotedByUser, OptionVotedByUserAdmin)

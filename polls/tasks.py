@@ -1,10 +1,36 @@
 import random, time
 
+from django.contrib.auth import get_user_model
 from django.db import IntegrityError, transaction
+
 
 from askkit.celery import app
 
-from .models import Poll, Option
+from .models import Poll, Option, OptionVotedByUser
+
+
+@app.task
+def option_make_vote(user_pk, user_ip, option_pk):
+	"""
+		Stores a vote object.
+	"""
+
+	try:
+		with transaction.atomic():
+
+			if user_pk != None:
+				user_model = get_user_model()
+				user = user_model.objects.get(pk=user_pk)
+			else:
+				user = None
+			option = Option.objects.get(pk=option_pk)
+
+			vote = OptionVotedByUser(user=user, option=option, fromIp=user_ip)
+			vote.save()
+
+	except IntegrityError as exc:
+		raise self.retry(exc=exc)
+
 
 @app.task
 def option_add_vote(pk):

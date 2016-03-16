@@ -3,6 +3,7 @@
 from __future__ import unicode_literals
 
 import uuid
+import ipware
 
 from django.conf import settings
 from django.utils import timezone
@@ -24,6 +25,7 @@ class Poll(models.Model):
 	public = models.BooleanField(default=True)
 	title = models.CharField(max_length=140)
 	total_votes = models.IntegerField(default=0)
+	anon_allowed = models.BooleanField(default=True)
 
 	def __unicode__(self):
 		return self.title
@@ -145,6 +147,26 @@ class Option(models.Model):
 
 		total_votes = self.poll.total_votes
 
-		percentage = (self.vote_quantity * 100.0) / total_votes
+		if total_votes != 0:
+			percentage = (self.vote_quantity * 100.0) / total_votes
+		else:
+			percentage = 0
 
 		return round(percentage,2)
+
+
+class OptionVotedByUser(models.Model):
+
+	id = models.UUIDField(primary_key=True, default=uuid.uuid4, 
+		editable=False)
+
+	user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='user',
+		blank = True, null = True)
+
+	option = models.ForeignKey(Option, related_name='voters')
+
+	fromIp = models.GenericIPAddressField(blank = True, null = True)
+	date = models.DateTimeField(auto_now_add=True)
+
+	def __unicode__(self):
+		return '%s - %s' % (self.user, self.option)
