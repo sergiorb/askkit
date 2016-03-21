@@ -3,16 +3,17 @@ import random, time
 from django.contrib.auth import get_user_model
 from django.db import IntegrityError, transaction
 
+from celery import chord
 
 from askkit.celery import app
 
-from .models import Poll, Option, OptionVotedByUser
+from .models import Poll, Option, Vote
 
 
-@app.task
-def option_make_vote(user_pk, user_ip, option_pk):
+@app.task(bind=True)
+def option_make_vote(self, user_pk, user_ip, option_pk):
 	"""
-		Stores a vote object.
+	Stores a vote object.
 	"""
 
 	try:
@@ -25,57 +26,17 @@ def option_make_vote(user_pk, user_ip, option_pk):
 				user = None
 			option = Option.objects.get(pk=option_pk)
 
-			vote = OptionVotedByUser(user=user, option=option, fromIp=user_ip)
+			vote = Vote(user=user, option=option, fromIp=user_ip)
 			vote.save()
 
 	except IntegrityError as exc:
 		raise self.retry(exc=exc)
-
-
-@app.task
-def option_add_vote(pk):
-	"""
-		Updates give option id and its poll increasing vote number by 1.
-	"""
-
-	option = Option.objects.get(pk=pk)
-
-	try:
-		with transaction.atomic():
-
-			option.vote_quantity += 1
-			option.save()
-			option.poll.total_votes += 1
-			option.poll.save()
-
-	except IntegrityError as exc:
-		raise self.retry(exc=exc)
-
-@app.task
-def option_subtract_vote(pk):
-	"""
-		Updates given option id and its poll decreasing vote number by 1.
-	"""
-
-	option = Option.objects.get(pk=pk)
-
-	if option.vote_quantity > 0:
-		try:
-			with transaction.atomic():
-
-				option.vote_quantity -= 1
-				option.save()
-				option.poll.total_votes -= 1
-				option.poll.save()
-
-		except IntegrityError as exc:
-			raise self.retry(exc=exc)
-
+		
 
 @app.task
 def option_delete(pk):
 	"""
-		Deletes given option id and updates its poll votes number.
+	Deletes given option id and updates its poll votes number.
 	"""
 
 	option = Option.objects.get(pk=pk)
@@ -90,11 +51,55 @@ def option_delete(pk):
 	except IntegrityError as exc:
 		raise self.retry(exc=exc)
 
+@app.task
+def count_option_votes(pk):
+	"""
+	Count and updates option votes.
+	"""
+
+	try:
+		with transaction.atomic():
+
+			option = Option.objects.get(pk=pk)
+			votes_count = Vote.objects.filter(option=option).count()
+			option.vote_quantity = votes_count
+			option.save()
+
+			return votes_count
+
+	except IntegrityError as exc:
+		raise self.retry(exc=exc)
+
+
+@app.task
+def update_poll_votes(options_votes, pk):
+	"""
+	Counts the poll votes (from its options) and update the poll.
+	"""
+
+	poll = Poll.objects.get(pk=pk)
+
+	poll.total_votes = sum(options_votes)
+	poll.save()
+
+
+@app.task
+def chord_update_poll_votes(pk):
+	"""
+	Updates poll options votes count.
+	"""
+
+	poll = Poll.objects.get(pk=pk)
+
+	callback = update_poll_votes.s(pk)
+	header = [count_option_votes.s(option.pk) for option in poll.options.all()]
+	result = chord(header)(callback)
+
 
 @app.task
 def reset_poll_votes(pk):
 	"""
-		Resets poll and its options votes number to 0.
+	Resets poll and its options votes number to 0.
 	"""
 
 	try:
@@ -113,9 +118,21 @@ def reset_poll_votes(pk):
 
 
 @app.task
+def update_votes():
+	"""
+	Updates polls votes in the db.
+	"""
+	polls = Poll.objects.all()
+
+	for poll in polls:
+
+		chord_update_poll_votes.delay(poll.pk)
+
+
+@app.task
 def option_random_vote(pk, number=100):
 	"""
-		Generates given number votes among given poll id.
+	Generates given number votes among given poll id.
 	"""
 	
 	poll = Poll.objects.get(pk=pk)

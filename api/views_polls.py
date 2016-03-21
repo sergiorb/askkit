@@ -12,14 +12,14 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.decorators import detail_route, list_route
 
-from polls.models import Poll, Option, OptionVotedByUser
+from polls.models import Poll, Option, Vote
 from polls.tasks import option_make_vote
-from polls.tasks import option_add_vote, option_subtract_vote
 from polls.tasks import reset_poll_votes
 from .serializers_polls import PollSerializer, OptionSerializer
-from .serializers_polls import OptionVotedByUserSerializer
-from .permissions import AnonVotingForOptions, OptionNotOwner
-from .permissions import IsOwnerOrReadOnly
+from .serializers_polls import VoteSerializer
+from .serializers_polls import VoteSerializerToPost
+from .permissions import IsOwnerOrReadOnly, OptionIsOwnerOrReadOnly
+from .permissions import AnonVotingForOptions, VoterNotOwner, VotingInTime
 from .pagination import PollsResultsSetPagination, OptionsResultsSetPagination
 from .pagination import VotesResultsSetPagination
 
@@ -31,21 +31,36 @@ class PollViewSet(viewsets.ModelViewSet):
 
 	queryset = Poll.objects.all()
 	serializer_class = PollSerializer
-	permission_classes = [IsOwnerOrReadOnly]
+	permission_classes = [IsOwnerOrReadOnly,]
 	pagination_class = OptionsResultsSetPagination
+
+	def get_queryset(self):
+		"""
+		This view returns a list of public polls.
+		"""
+
+		return  Poll.objects.filter(public=True)
 
 
 class OptionViewSet(viewsets.ModelViewSet):
 
 	queryset = Option.objects.all()
 	serializer_class = OptionSerializer
+	permission_classes = [OptionIsOwnerOrReadOnly,]
 	pagination_class = PollsResultsSetPagination
 
-	@detail_route(permission_classes=[AnonVotingForOptions, OptionNotOwner], 
-		methods=['get'])
+	def get_queryset(self):
+		"""
+		This view returns a list of public options.
+		"""
+
+		return  Option.objects.filter(poll__public=True)
+
+
+	@detail_route(permission_classes=[ VotingInTime, AnonVotingForOptions, VoterNotOwner,], methods=['get'])
 	def vote(self, request, pk=None):
 		"""
-		Stores a vote object.
+		Generate a vote object.
 		"""
 
 		self.check_object_permissions(self.request, self.get_object())
@@ -56,70 +71,16 @@ class OptionViewSet(viewsets.ModelViewSet):
 		return Response({
 			'status_code': 200,
 			'task_id': task.task_id,
-			'task_status_link': task.task_id, 
-			'detail': 'Your request have been queued.'
-			})
-
-	@detail_route(permission_classes=[AnonVotingForOptions, OptionNotOwner], 
-		methods=['get'])
-	def unvote(self, request, pk=None):
-		"""
-		Stores a vote object.
-		"""
-
-		self.check_object_permissions(self.request, self.get_object())
-
-		task = option_make_vote.delay(user_pk=request.user.pk, 
-			user_ip=get_ip(request), option_pk=pk)
-
-		return Response({
-			'status_code': 200,
-			'task_id': task.task_id,
-			'task_status_link': task.task_id, 
-			'detail': 'Your request have been queued.'
+			'detail': 'Your vote have been queued.'
 			})
 
 
-	@detail_route(permission_classes=[AnonVotingForOptions], methods=['get'])
-	def addvote(self, request, pk=None):
-		"""
-			Executes option_add_vote task and returns task id.
-		"""
+class VoteViewSet(mixins.ListModelMixin, 
+	mixins.RetrieveModelMixin, mixins.DestroyModelMixin, 
+	viewsets.GenericViewSet):
 
-		self.check_object_permissions(self.request, self.get_object())
-
-		task = option_add_vote.delay(pk)
-
-		return Response({
-			'status_code': 200,
-			'task_id': task.task_id,
-			'task_status_link': task.task_id, 
-			'detail': 'Your request have been queued.'
-			})
-
-	@detail_route(permission_classes=[AnonVotingForOptions], methods=['get'])
-	def subtractvote(self, request, pk=None):
-		"""
-			Executes option_subtract_vote task and returns task id.
-		"""
-
-		self.check_object_permissions(self.request, self.get_object())
-
-		task = option_subtract_vote.delay(pk)
-
-		return Response({
-			'status_code': 200,
-			'task_id': task.task_id,
-			'task_status_link': task.task_id, 
-			'detail': 'Your request have been queued.'
-			})
-
-
-class OptionVotedByUserViewSet(mixins.ListModelMixin, 
-	mixins.RetrieveModelMixin, viewsets.GenericViewSet):
-
-	queryset = OptionVotedByUser.objects.all()
-	serializer_class = OptionVotedByUserSerializer
+	queryset = Vote.objects.all()
+	serializer_class = VoteSerializer
 	permission_classes = [permissions.IsAuthenticated,]
 	pagination_class = VotesResultsSetPagination
 
@@ -129,4 +90,4 @@ class OptionVotedByUserViewSet(mixins.ListModelMixin,
 		authenticated user.
 		"""
 
-		return  OptionVotedByUser.objects.filter(user=self.request.user)
+		return  Vote.objects.filter(user=self.request.user)

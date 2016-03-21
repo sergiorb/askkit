@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Poll, Option, OptionVotedByUser
+from .models import Poll, Option, Vote
 
 # Register your models here.
 
@@ -92,7 +92,7 @@ class OptionAdmin(admin.ModelAdmin):
 		'added_on',
 	)
 
-class OptionVotedByUserAdmin(admin.ModelAdmin):
+class VoteAdmin(admin.ModelAdmin):
 
 	fields = (
 		'id',
@@ -121,4 +121,4 @@ class OptionVotedByUserAdmin(admin.ModelAdmin):
 
 admin.site.register(Poll, PollAdmin)
 admin.site.register(Option, OptionAdmin)
-admin.site.register(OptionVotedByUser, OptionVotedByUserAdmin)
+admin.site.register(Vote, VoteAdmin)

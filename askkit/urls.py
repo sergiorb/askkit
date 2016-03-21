@@ -23,7 +23,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^api/', include('api.urls')),
     url(r'^swagger/', include('rest_framework_swagger.urls')),
-    url(r'^', include('polls.urls'))
+    #url(r'^', include('polls.urls'))
 ]
 
 if settings.DEBUG:

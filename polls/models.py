@@ -45,7 +45,7 @@ class Poll(models.Model):
 	def is_active(self):
 		"""
 			Returns true when current datetime is greater than its begin date
-			and it hasn't end date, or if current daterime is between its
+			and it hasn't end date, or if current datetime is between its
 			begin date and end date.
 		"""
 
@@ -155,7 +155,7 @@ class Option(models.Model):
 		return round(percentage,2)
 
 
-class OptionVotedByUser(models.Model):
+class Vote(models.Model):
 
 	id = models.UUIDField(primary_key=True, default=uuid.uuid4, 
 		editable=False)
@@ -163,10 +163,20 @@ class OptionVotedByUser(models.Model):
 	user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='user',
 		blank = True, null = True)
 
-	option = models.ForeignKey(Option, related_name='voters')
+	option = models.ForeignKey(Option, related_name='option')
 
 	fromIp = models.GenericIPAddressField(blank = True, null = True)
 	date = models.DateTimeField(auto_now_add=True)
 
 	def __unicode__(self):
 		return '%s - %s' % (self.user, self.option)
+
+
+class PollAuthToken(models.Model):
+	
+	id = models.UUIDField(primary_key=True, default=uuid.uuid4, 
+		editable=False)
+	
+	user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='user_auth_token',)
+	
+	poll = models.ForeignKey(Poll, related_name='poll')
