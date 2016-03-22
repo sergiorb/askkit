@@ -14,7 +14,6 @@ from rest_framework.decorators import detail_route, list_route
 
 from polls.models import Poll, Option, Vote
 from polls.tasks import option_make_vote
-from polls.tasks import reset_poll_votes
 from .serializers_polls import PollSerializer, OptionSerializer
 from .serializers_polls import VoteSerializer
 from .serializers_polls import VoteSerializerToPost
@@ -57,7 +56,8 @@ class OptionViewSet(viewsets.ModelViewSet):
 		return  Option.objects.filter(poll__public=True)
 
 
-	@detail_route(permission_classes=[ VotingInTime, AnonVotingForOptions, VoterNotOwner,], methods=['get'])
+	@detail_route(permission_classes=[ VotingInTime, AnonVotingForOptions, 
+		VoterNotOwner,], methods=['get'])
 	def vote(self, request, pk=None):
 		"""
 		Generate a vote object.

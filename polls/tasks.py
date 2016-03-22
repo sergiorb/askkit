@@ -1,4 +1,4 @@
-import random, time
+import random, time, string
 
 from django.contrib.auth import get_user_model
 from django.db import IntegrityError, transaction
@@ -8,6 +8,8 @@ from celery import chord
 from askkit.celery import app
 
 from .models import Poll, Option, Vote
+
+from .functions import generate_dummy_polls_votes
 
 
 @app.task(bind=True)
@@ -32,24 +34,6 @@ def option_make_vote(self, user_pk, user_ip, option_pk):
 	except IntegrityError as exc:
 		raise self.retry(exc=exc)
 		
-
-@app.task
-def option_delete(pk):
-	"""
-	Deletes given option id and updates its poll votes number.
-	"""
-
-	option = Option.objects.get(pk=pk)
-
-	try:
-		with transaction.atomic():
-
-			option.poll.total_votes -= option.vote_quantity
-			option.poll.save()
-			option.delete()
-
-	except IntegrityError as exc:
-		raise self.retry(exc=exc)
 
 @app.task
 def count_option_votes(pk):
@@ -97,30 +81,9 @@ def chord_update_poll_votes(pk):
 
 
 @app.task
-def reset_poll_votes(pk):
-	"""
-	Resets poll and its options votes number to 0.
-	"""
-
-	try:
-		with transaction.atomic():
-
-			poll = Poll.objects.get(pk=pk)
-			poll.total_votes = 0
-			poll.save()
-
-			for option in poll.options.all():
-				option.vote_quantity = 0
-				option.save()
-
-	except IntegrityError as exc:
-		raise self.retry(exc=exc)
-
-
-@app.task
 def update_votes():
 	"""
-	Updates polls votes in the db.
+	Updates polls votes in the entire db.
 	"""
 	polls = Poll.objects.all()
 
@@ -130,17 +93,6 @@ def update_votes():
 
 
 @app.task
-def option_random_vote(pk, number=100):
-	"""
-	Generates given number votes among given poll id.
-	"""
-	
-	poll = Poll.objects.get(pk=pk)
-	option = poll.options.all()
-	options = option.values_list('pk', flat=True)
+def create_dummy_polls(number=100):
 
-	for x in xrange(0, number):
-		
-		option_add_vote.delay(random.choice(options))
-
-
+	generate_dummy_polls_votes(number)

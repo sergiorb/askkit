@@ -12,7 +12,6 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
     message = "This poll doesn't belong to you."
 
     def has_object_permission(self, request, view, obj):
-        print self.message
         # Read permissions are allowed to any request,
         # so we'll always allow GET, HEAD or OPTIONS requests.
         if request.method in permissions.SAFE_METHODS:
@@ -73,7 +72,6 @@ class VotingInTime(permissions.BasePermission):
 
     def has_object_permission(self, request, view, obj):
 
-        print obj.poll.is_active()
         if obj.poll.is_active():
             return True
         else:

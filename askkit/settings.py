@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 """
 
 import os
+from datetime import timedelta
 
 # Celery imports
 from kombu import Exchange, Queue
@@ -132,12 +133,12 @@ MEDIA_URL = '/media/'
 
 # Celery config
 
-# celery multi start -A askkit.celery default polls -Q:default default \
-# -Q:polls polls -c:default 8 -c:polls 1
+# celery multi start -A askkit.celery default
 
-#CELERY_ACCEPT_CONTENT = ['json',]
+# CELERY_ACCEPT_CONTENT = ['json',]
 
 BROKER_URL = os.environ.get('CELERY_BROKER_URL')
+
 CELERY_RESULT_BACKEND = os.environ.get('CELERY_RESULT_BACKEND')
 
 CELERY_RESULT_BACKEND = os.environ.get('CELERY_RESULT_BACKEND')
@@ -148,16 +149,12 @@ CELERY_QUEUES = (
     Queue('default', Exchange('default'), routing_key='default'),
 )
 
-CELERY_ROUTES = {
-    'polls.tasks.option_add_vote': {
-        'queue': 'polls',
+#  celery -A askkit.celery beat
+CELERYBEAT_SCHEDULE = {
+    'update-votes-every-1-hour': {
+        'task': 'polls.tasks.update_votes',
+        'schedule': timedelta(hours=1),
     },
-    'polls.tasks.option_subtract_vote': {
-        'queue': 'polls',
-    },
-    'polls.tasks.reset_poll_votes': {
-        'queue': 'polls',
-    }
 }
 
 

@@ -10,3 +10,4 @@ db*
 
 # Celery
 *.pid
+ celerybeat-schedule
