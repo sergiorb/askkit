@@ -3,6 +3,10 @@
 from rest_framework import permissions
 from rest_framework.exceptions import PermissionDenied
 
+from ipware.ip import get_ip
+
+from polls.models import Poll, Option, Vote
+
 
 class IsOwnerOrReadOnly(permissions.BasePermission):
     """
@@ -95,3 +99,39 @@ class VoterNotOwner(permissions.BasePermission):
                 return True
         else:
             return True
+
+
+class OnlyOneVote(permissions.BasePermission):
+    """
+    Object-level permission to only allow one vote per user/ip.
+    """
+
+    message = "You have already voted this poll."
+
+    def  has_object_permission(self, request, view, obj):
+
+        if request.user.is_authenticated():
+
+            option = Option.objects.select_related('poll').get(pk=obj.pk)
+            options = option.poll.options.all()
+
+            vote = Vote.objects.filter(option__in=options, user=request.user)
+
+            if len(vote) == 0:
+                return True
+            else:
+                raise PermissionDenied(self.message)
+
+            return True
+        else:
+
+            option = Option.objects.select_related('poll').get(pk=obj.pk)
+            options = option.poll.options.all()
+            
+            vote = Vote.objects.filter(option__in=options, fromIp=get_ip(request))
+
+            if len(vote) == 0:
+                return True
+            else:
+                self.message = 'Your IP has already voted this poll.'
+                raise PermissionDenied(self.message)

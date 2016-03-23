@@ -3,7 +3,6 @@
 from __future__ import unicode_literals
 
 import uuid
-import ipware
 
 from django.conf import settings
 from django.utils import timezone
@@ -16,9 +15,9 @@ class Poll(models.Model):
 	id = models.UUIDField(primary_key=True, default=uuid.uuid4, 
 		editable=False)
 	owner = models.ForeignKey(settings.AUTH_USER_MODEL, 
-		related_name='profile')
+		related_name='polls', blank=True, null=True)
 	
-	added_on = models.DateTimeField(auto_now_add=True)
+	added_on = models.DateTimeField(default=timezone.now)
 	context = models.TextField(blank=True, null=True)
 	date_begin = models.DateTimeField(default=timezone.now)
 	date_end = models.DateTimeField(blank=True, null=True)
@@ -93,7 +92,6 @@ class Poll(models.Model):
 		else:
 			return False
 
-
 	def is_finished(self):
 		"""
 			Returns True if the poll has an end date and current time is
@@ -119,6 +117,7 @@ class Option(models.Model):
 
 	id = models.UUIDField(primary_key=True, default=uuid.uuid4, 
 		editable=False)
+
 	poll = models.ForeignKey(Poll, related_name='options')
 
 	added_on = models.DateTimeField(auto_now_add=True)
@@ -160,7 +159,7 @@ class Vote(models.Model):
 	id = models.UUIDField(primary_key=True, default=uuid.uuid4, 
 		editable=False)
 
-	user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='user',
+	user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='votes',
 		blank = True, null = True)
 
 	option = models.ForeignKey(Option, related_name='option')

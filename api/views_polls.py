@@ -17,8 +17,9 @@ from polls.tasks import option_make_vote
 from .serializers_polls import PollSerializer, OptionSerializer
 from .serializers_polls import VoteSerializer
 from .serializers_polls import VoteSerializerToPost
-from .permissions import IsOwnerOrReadOnly, OptionIsOwnerOrReadOnly
-from .permissions import AnonVotingForOptions, VoterNotOwner, VotingInTime
+from .permissions_polls import IsOwnerOrReadOnly, OptionIsOwnerOrReadOnly
+from .permissions_polls import AnonVotingForOptions, VoterNotOwner, VotingInTime
+from .permissions_polls import OnlyOneVote
 from .pagination import PollsResultsSetPagination, OptionsResultsSetPagination
 from .pagination import VotesResultsSetPagination
 
@@ -57,7 +58,7 @@ class OptionViewSet(viewsets.ModelViewSet):
 
 
 	@detail_route(permission_classes=[ VotingInTime, AnonVotingForOptions, 
-		VoterNotOwner,], methods=['get'])
+		VoterNotOwner, OnlyOneVote, ], methods=['get'])
 	def vote(self, request, pk=None):
 		"""
 		Generate a vote object.
