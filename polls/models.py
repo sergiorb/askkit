@@ -18,6 +18,7 @@ class Poll(models.Model):
 		related_name='polls', blank=True, null=True)
 	
 	added_on = models.DateTimeField(default=timezone.now)
+	date_modified = models.DateTimeField(blank=True, null=True)
 	context = models.TextField(blank=True, null=True)
 	date_begin = models.DateTimeField(default=timezone.now)
 	date_end = models.DateTimeField(blank=True, null=True)
@@ -26,13 +27,21 @@ class Poll(models.Model):
 	total_votes = models.IntegerField(default=0)
 	anon_allowed = models.BooleanField(default=True)
 
+	def save(self, *args, **kwargs):
+		
+		# If updates: updates modified.
+		if self.id:
+			self.date_modified = timezone.now()
+
+		return super(Poll, self).save(*args, **kwargs)
+
 	def __unicode__(self):
 		return self.title
 
 	def short_title(self):
 		"""
-			Returns a fragment of title string if it's greater than 
-			max_length.
+		Returns a fragment of title string if it's greater than 
+		max_length.
 		"""
 		max_length = 30
 
@@ -43,9 +52,9 @@ class Poll(models.Model):
 
 	def is_active(self):
 		"""
-			Returns true when current datetime is greater than its begin date
-			and it hasn't end date, or if current datetime is between its
-			begin date and end date.
+		Returns true when current datetime is greater than its begin date
+		and it hasn't end date, or if current datetime is between its
+		begin date and end date.
 		"""
 
 		now = timezone.now()
@@ -59,7 +68,7 @@ class Poll(models.Model):
 
 	def has_end(self):
 		"""
-			Returns true when poll has an end date.
+		Returns true when poll has an end date.
 		"""
 		if self.date_end:
 			return True
@@ -68,8 +77,8 @@ class Poll(models.Model):
 
 	def time_to_begin(self):
 		"""
-			Returns a datetime object with the remaining time to its begin
-			date. If current time is above begin date, returns False.
+		Returns a datetime object with the remaining time to its begin
+		date. If current time is above begin date, returns False.
 		"""
 
 		now = timezone.now()
@@ -81,8 +90,8 @@ class Poll(models.Model):
 
 	def time_to_end(self):
 		"""
-			Returns a datetime object with the remaining time to its end date.
-			If current time is aboce end date, returns False.
+		Returns a datetime object with the remaining time to its end date.
+		If current time is aboce end date, returns False.
 		"""
 
 		now = timezone.now()
@@ -94,8 +103,8 @@ class Poll(models.Model):
 
 	def is_finished(self):
 		"""
-			Returns True if the poll has an end date and current time is
-			above end date.
+		Returns True if the poll has an end date and current time is
+		above end date.
 		"""
 
 		now = timezone.now()
@@ -107,10 +116,32 @@ class Poll(models.Model):
 
 	def options_count(self):
 		"""
-			Returns the count of related options. 
+		Returns the count of related options. 
 		"""
 
 		return self.options.count()
+
+	def votes(self):
+		"""
+		Returns the votes count for this poll.
+		"""
+
+		return self.total_votes
+
+	def created(self):
+		"""
+		Returns poll creation date.
+		"""
+
+		return self.added_on
+
+	def modified(self):
+		"""
+		Returns poll last modification date.
+		"""
+
+		return self.date_modified
+
 
 
 class Option(models.Model):
@@ -120,9 +151,18 @@ class Option(models.Model):
 
 	poll = models.ForeignKey(Poll, related_name='options')
 
-	added_on = models.DateTimeField(auto_now_add=True)
+	added_on = models.DateTimeField(default=timezone.now)
+	date_modified = models.DateTimeField(blank=True, null=True)
 	optionText = models.CharField(max_length=140)
-	vote_quantity = models.PositiveIntegerField(default=0)	
+	vote_quantity = models.PositiveIntegerField(default=0)
+
+	def save(self, *args, **kwargs):
+		
+		# If updates: updates modified.
+		if self.id:
+			self.date_modified = timezone.now()
+
+		return super(Option, self).save(*args, **kwargs)
 
 	def __unicode__(self):
 		return self.optionText
@@ -138,10 +178,17 @@ class Option(models.Model):
 		except IntegrityError:
 			pass
 
+	def votes(self):
+		"""
+		Returns the votes count for this option.
+		"""
+
+		return self.vote_quantity
+
 	def percentage(self):
 		"""
-			Returns the option percentaje based in the poll total votes and
-			option votes
+		Returns the option percentaje based in the poll total votes and
+		option votes.
 		"""
 
 		total_votes = self.poll.total_votes
@@ -152,6 +199,20 @@ class Option(models.Model):
 			percentage = 0
 
 		return round(percentage,2)
+
+	def created(self):
+		"""
+		Returns option creation date.
+		"""
+
+		return self.added_on
+
+	def modified(self):
+		"""
+		Returns option last modification date.
+		"""
+
+		return self.date_modified
 
 
 class Vote(models.Model):
@@ -165,7 +226,7 @@ class Vote(models.Model):
 	option = models.ForeignKey(Option, related_name='option')
 
 	fromIp = models.GenericIPAddressField(blank = True, null = True)
-	date = models.DateTimeField(auto_now_add=True)
+	date = models.DateTimeField(default=timezone.now)
 
 	def __unicode__(self):
 		return '%s - %s' % (self.user, self.option)

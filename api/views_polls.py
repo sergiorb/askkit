@@ -16,7 +16,6 @@ from polls.models import Poll, Option, Vote
 from polls.tasks import option_make_vote
 from .serializers_polls import PollSerializer, OptionSerializer
 from .serializers_polls import VoteSerializer
-from .serializers_polls import VoteSerializerToPost
 from .permissions_polls import IsOwnerOrReadOnly, OptionIsOwnerOrReadOnly
 from .permissions_polls import AnonVotingForOptions, VoterNotOwner, VotingInTime
 from .permissions_polls import OnlyOneVote
@@ -42,7 +41,9 @@ class PollViewSet(viewsets.ModelViewSet):
 		return  Poll.objects.filter(public=True)
 
 
-class OptionViewSet(viewsets.ModelViewSet):
+class OptionViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, 
+	mixins.UpdateModelMixin, mixins.RetrieveModelMixin, 
+	mixins.DestroyModelMixin, viewsets.GenericViewSet):
 
 	queryset = Option.objects.all()
 	serializer_class = OptionSerializer
