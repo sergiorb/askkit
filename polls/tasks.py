@@ -48,7 +48,7 @@ def count_option_votes(pk):
 			votes_count = Vote.objects.filter(option=option).count()
 			option.vote_quantity = votes_count
 			option.save()
-
+ 
 			return votes_count
 
 	except IntegrityError as exc:

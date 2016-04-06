@@ -166,17 +166,6 @@ class Option(models.Model):
 
 	def __unicode__(self):
 		return self.optionText
-	
-	# To TASK
-	def delete(self, *args, **kwargs):
-		
-		try:
-			with transaction.atomic():
-				self.poll.total_votes -= self.vote_quantity
-				self.poll.save()
-				super(Option, self).delete(*args, **kwargs)
-		except IntegrityError:
-			pass
 
 	def votes(self):
 		"""
