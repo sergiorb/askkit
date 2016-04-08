@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     'core',
     'polls',
     'rest_framework',
+    'rest_framework.authtoken',
+    #'oauth2_provider',
     'rest_framework_swagger',
     'api',
 ]
@@ -165,9 +167,17 @@ CELERYBEAT_SCHEDULE = {
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    ),
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     ],
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+        #'rest_framework.renderers.AdminRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    ),
     'EXCEPTION_HANDLER': 'api.exceptions.status_code_exception_handler',
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 100,   
