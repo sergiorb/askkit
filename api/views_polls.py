@@ -2,6 +2,7 @@ from ipware.ip import get_ip
 
 from django.views.generic import View
 from django.http import JsonResponse
+from django.db.models import Q
 
 from rest_framework import viewsets
 from rest_framework import permissions
@@ -39,10 +40,17 @@ class PollViewSet(viewsets.ModelViewSet):
 		"""
 
 		###############################################################
-		# TODO: If request.user == owner or in_list(), retrieve object.
+		# TODO: ADD: If request.user in_list(), retrieve object.
 		###############################################################
+		
+		user = self.request.user
 
-		return  Poll.objects.filter(public=True)
+		if user.is_anonymous():
+			return  Poll.objects.filter(public=True)
+		else:
+			return Poll.objects.filter(Q(public=True) | Q(owner=user))
+		
+		#return  Poll.objects.filter(public=True)
 
 
 class OptionViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, 
@@ -60,10 +68,17 @@ class OptionViewSet(mixins.ListModelMixin, mixins.CreateModelMixin,
 		"""
 
 		###############################################################
-		# TODO: If request.user == owner or in_list(), retrieve object.
+		# TODO: ADD: If request.user in_list(), retrieve object.
 		###############################################################
 
-		return  Option.objects.filter(poll__public=True)
+		user = self.request.user
+
+		if user.is_anonymous():
+			return Option.objects.filter(poll__public=True)
+		else:
+			return Option.objects.filter(Q(poll__public=True) | Q(poll__owner=user))
+
+		#return  Option.objects.filter(poll__public=True)
 
 
 	@detail_route(permission_classes=[ VotingInTime, AnonVotingForOptions, 
