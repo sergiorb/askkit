@@ -21,7 +21,7 @@ from django.views.static import serve
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^api/', include('api.urls')),
+    url(r'^api/%s/' % settings.API_VERSION, include('api.urls')),
     url(r'^swagger/', include('rest_framework_swagger.urls')),
     #url(r'^', include('polls.urls'))
 ]

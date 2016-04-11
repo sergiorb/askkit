@@ -143,7 +143,6 @@ class Poll(models.Model):
 		return self.date_modified
 
 
-
 class Option(models.Model):
 
 	id = models.UUIDField(primary_key=True, default=uuid.uuid4, 

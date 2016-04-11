@@ -38,7 +38,7 @@ def option_make_vote(self, user_pk, user_ip, option_pk):
 @app.task
 def count_option_votes(pk):
 	"""
-	Count and updates option votes.
+	Count and updates an option votes.
 	"""
 
 	try:
@@ -58,7 +58,8 @@ def count_option_votes(pk):
 @app.task
 def update_poll_votes(options_votes, pk):
 	"""
-	Counts the poll votes (from its options) and update the poll.
+	Sums poll votes (from its options) and update the poll. 
+	( options_votes = [3,0,1] ).
 	"""
 
 	poll = Poll.objects.get(pk=pk)
@@ -70,7 +71,9 @@ def update_poll_votes(options_votes, pk):
 @app.task
 def chord_update_poll_votes(pk):
 	"""
-	Updates poll options votes count.
+	Updates poll options votes count. Using celery chord, executes 
+	'count_option_votes()' task (async mode) for every poll option and returns
+	 its value to 'update_poll_votes()'.
 	"""
 
 	poll = Poll.objects.get(pk=pk)

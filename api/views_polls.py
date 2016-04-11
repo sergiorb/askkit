@@ -38,6 +38,10 @@ class PollViewSet(viewsets.ModelViewSet):
 		This view returns a list of public polls.
 		"""
 
+		###############################################################
+		# TODO: If request.user == owner or in_list(), retrieve object.
+		###############################################################
+
 		return  Poll.objects.filter(public=True)
 
 
@@ -55,11 +59,15 @@ class OptionViewSet(mixins.ListModelMixin, mixins.CreateModelMixin,
 		This view returns a list of public options.
 		"""
 
+		###############################################################
+		# TODO: If request.user == owner or in_list(), retrieve object.
+		###############################################################
+
 		return  Option.objects.filter(poll__public=True)
 
 
 	@detail_route(permission_classes=[ VotingInTime, AnonVotingForOptions, 
-		VoterNotOwner, OnlyOneVote, ], methods=['get'])
+		VoterNotOwner, OnlyOneVote, ], methods=['post'])
 	def vote(self, request, pk=None):
 		"""
 		Generate a vote object.

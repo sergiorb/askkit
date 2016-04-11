@@ -16,6 +16,10 @@ class GetTaskStatus(View):
 		Returns task status from given id.
 	"""
 
+	###############################################################
+	# TODO: move from generic.View to rest_framework.View ??
+	###############################################################
+
 	def get(self, request, *args, **kwargs):
 		"""
 			Executes get_task_status task and returns task state.
@@ -27,6 +31,10 @@ class GetTaskStatus(View):
 
 
 class CountVotes(View):
+
+	###############################################################
+	# TODO: move from generic.View to rest_framework.View ??
+	###############################################################
 
 	def get(self, request, *args, **kwargs):
 

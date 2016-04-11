@@ -9,9 +9,25 @@ from .models import Poll, Option, Vote
 from .tasks import chord_update_poll_votes as update_poll_votes
 
 
+
 @receiver(post_delete, sender=Vote, dispatch_uid="update_poll_votes_on_delete")
 def update_poll_votes_on_delete(sender, instance, **kwargs):
+	"""
+	Updates votes count on vote deletion. 
+	"""
 	
+	update_poll_votes.delay(instance.option.poll.pk)
+
+
+@receiver(post_save, sender=Vote, dispatch_uid="update_poll_votes_on_create")
+def update_poll_votes_on_create(sender, instance, **kwargs):
+	"""
+	Updates votes count on vote creation.
+
+	This aproach works in a VERY LOW scale environment because it not overload 
+	the system. TODO: IMPROVE VOTE COUNT TRIGGER SYSTEM. 
+	"""
+
 	update_poll_votes.delay(instance.option.poll.pk)
 
 

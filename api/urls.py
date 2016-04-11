@@ -23,8 +23,9 @@ urlpatterns = [
 	url(r'^core/count/$', CountVotes.as_view(), 
 		name='core_vote_count'),
 
-    #url(r'^api-auth/', include('rest_framework.urls', 
-    #	namespace='rest_framework')),
+	# Disable this for production.
+    url(r'^api-auth/', include('rest_framework.urls', 
+    	namespace='rest_framework')),
 
     url(r'^request-auth-token/', views.obtain_auth_token)
 

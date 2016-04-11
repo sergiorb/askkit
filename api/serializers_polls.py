@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.utils import timezone
 
 from rest_framework import serializers
 
@@ -18,8 +19,6 @@ class OptionSerializer(serializers.ModelSerializer):
 
 	def validate_poll(self, value):
 
-		# TODO: Executes only when updates.
-
 		request = self.context['request']
 
 		if request.user.is_anonymous():
@@ -34,10 +33,12 @@ class OptionSerializer(serializers.ModelSerializer):
 
 	def validate_optionText(self, value):
 
-		# TODO: use select_related()
 		poll = Poll.objects.get(pk=self.initial_data['poll'])
 
+		###############################################################
 		# TODO: use select_related()
+		###############################################################
+		
 		options = poll.options.all()
 
 		for option in options:
@@ -55,6 +56,11 @@ class OptionSerializerPollPost(OptionSerializer):
 	"""
 
 	poll = serializers.UUIDField(required=False)
+
+
+	def validate_optionText(self, value):
+
+		return value
 
 
 class PollSerializer(serializers.ModelSerializer):
@@ -75,16 +81,47 @@ class PollSerializer(serializers.ModelSerializer):
 
 	def validate(self, data):
 		"""
-		Check that the date begin is before the date end.
+		Checks that date begin is before the date end.
 		"""
 
-		if data['date_begin'] >= data['date_end']:
-			raise serializers.ValidationError("Date end must occur after date begin.")
+		if not 'date_begin' in data:
+			data['date_begin'] = timezone.now()
+
+		if 'date_end' in data:
+			if data['date_begin'] >= data['date_end']:
+				raise serializers.ValidationError("Date end must occur after date begin.")
+
 		return data
+
+	def validate_date_begin(self, value):
+		"""
+		Checks that date begin is after creation date.
+		"""
+
+		if not value:
+			raise serializers.ValidationError("This field may not be null.")
+
+		if value <= timezone.now():
+			raise serializers.ValidationError("Date begin must occur after creation date.")
+
+		return value
+
+	def validate_date_end(self, value):
+		"""
+		Checks that date end is after creation date.
+		"""
+
+		if not value:
+			raise serializers.ValidationError("This field may not be null.")
+
+		if value <= timezone.now():
+			raise serializers.ValidationError("Date end must occur after creation date.")
+
+		return value
 
 	def validate_options(self, value):
 		"""
-		Check that the poll has two and different options at minimum.
+		Check that poll has two and different options at minimum.
 		"""
 
 		if not len(value) > 1:
@@ -102,10 +139,15 @@ class PollSerializer(serializers.ModelSerializer):
 	def create(self, validated_data):
 		"""
 		Allows a full poll/option creation.
-		"""		
+		"""	
+
+		user = self.context['request'].user
+
+		if user.is_anonymous():
+			user = None
 
 		options_data = validated_data.pop('options')
-		poll = Poll.objects.create(**validated_data)
+		poll = Poll.objects.create(owner=user, **validated_data)
 
 		for poll_data in options_data:
 			Option.objects.create(poll=poll, **poll_data)
