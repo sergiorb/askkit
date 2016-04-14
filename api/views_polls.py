@@ -1,3 +1,7 @@
+# -*- coding: utf-8 -*-
+
+import json, random
+
 from ipware.ip import get_ip
 
 from django.views.generic import View
@@ -8,8 +12,11 @@ from rest_framework import viewsets
 from rest_framework import permissions
 from rest_framework import generics
 from rest_framework import mixins
+from rest_framework import filters
+from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.renderers import JSONRenderer
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.decorators import detail_route, list_route
 
@@ -49,8 +56,55 @@ class PollViewSet(viewsets.ModelViewSet):
 			return  Poll.objects.filter(public=True)
 		else:
 			return Poll.objects.filter(Q(public=True) | Q(owner=user))
+
+	@list_route(methods=['get'])
+	def random(self, request):
+		"""
+		Retieves a single random poll result.
+		"""
+
+		count = Poll.objects.all().count()
 		
-		#return  Poll.objects.filter(public=True)
+
+		if count > 0:
+			random_index = random.randint(0, count - 1)
+			poll = Poll.objects.all()[random_index]
+		else:
+			return Response({
+				'status_code':status.HTTP_404_NOT_FOUND,
+				'detail': 'Not found.'
+				})
+
+		serializer = PollSerializer(poll)
+
+		return Response(serializer.data)
+
+	@list_route(methods=['get'])
+	def randomset(self, request):
+		"""
+		Retrieves a random** set of polls.
+		"""
+
+		n = 5
+
+		count = Poll.objects.all().count()
+
+		if count >= n:
+			random_index = random.randint(0, count - n)
+			polls = Poll.objects.all()[random_index:random_index + n]
+		else:
+			polls = Poll.objects.all()
+
+		results = []
+
+		for poll in polls:
+
+			results.append(PollSerializer(poll).data)
+
+		return Response({
+			'count': count,
+			'results': results
+			})
 
 
 class OptionViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, 

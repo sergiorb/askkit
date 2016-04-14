@@ -30,6 +30,12 @@ class Poll(models.Model):
 	def save(self, *args, **kwargs):
 		
 		# If updates: updates modified.
+
+		#####################################################
+		# TODO: This should be NOT triggered updating 
+		# "total_votes".
+		#####################################################
+		
 		if self.id:
 			self.date_modified = timezone.now()
 
@@ -158,6 +164,12 @@ class Option(models.Model):
 	def save(self, *args, **kwargs):
 		
 		# If updates: updates modified.
+
+		#####################################################
+		# TODO: This should be NOT triggered updating 
+		# "vote_quantity".
+		#####################################################
+
 		if self.id:
 			self.date_modified = timezone.now()
 

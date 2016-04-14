@@ -1,7 +1,10 @@
 # Askkit
-A voting system website made with Django - **development branch**
+A polling system made with Django - **development branch**
 
 #### TODO:
+
+Poll and Option model save methods should **NOT** update its last modification
+field when update "total_votes" and "vote_quantity" (on */polls/models.py*)
 
 use select_related() (on */api/serializers_polls.py*)
 

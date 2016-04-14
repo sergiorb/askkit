@@ -11,7 +11,7 @@ def generate_dummy_polls_votes(number=100):
 	votes respectively.
 	"""
 
-	def string_generator(size=6, chars=string.ascii_uppercase + string.digits):
+	def string_generator(size=6, chars=string.ascii_uppercase + string.digits + ' '):
 		return ''.join(random.choice(chars) for _ in range(size))
 
 	user_model = get_user_model()
@@ -20,7 +20,7 @@ def generate_dummy_polls_votes(number=100):
 
 
 	polls = Poll.objects.bulk_create([Poll(owner=random.choice(users), 
-		title=string_generator()) for i in range(number)])
+		title=string_generator(size=48)) for i in range(number)])
 
 	options = Option.objects.bulk_create([Option(poll=random.choice(polls), 
 		optionText=string_generator()) for i in range(number*3)])
