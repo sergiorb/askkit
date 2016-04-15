@@ -159,6 +159,7 @@ BROKER_URL = os.environ.get('CELERY_BROKER_URL')
 
 CELERY_RESULT_BACKEND = os.environ.get('CELERY_RESULT_BACKEND')
 
+CELERY_REDIS_MAX_CONNECTIONS = 1
 # CELERY_RESULT_BACKEND = os.environ.get('CELERY_RESULT_BACKEND')
 
 CELERY_DEFAULT_QUEUE = 'default'
@@ -212,15 +213,15 @@ LOGGING = {
     'disable_existing_loggers': False,
     'handlers': {
         'file': {
-            'level': 'DEBUG',
+            'level': 'ERROR',
             'class': 'logging.FileHandler',
-            'filename': 'django-debug.log',
+            'filename': 'django-error.log',
         },
     },
     'loggers': {
         'django': {
             'handlers': ['file'],
-            'level': 'DEBUG',
+            'level': 'ERROR',
             'propagate': True,
         },
     },
