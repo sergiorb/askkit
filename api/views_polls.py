@@ -60,15 +60,15 @@ class PollViewSet(viewsets.ModelViewSet):
 	@list_route(methods=['get'])
 	def random(self, request):
 		"""
-		Retieves a single random poll result.
+		Retieves a single public random poll result.
 		"""
 
-		count = Poll.objects.all().count()
+		count = Poll.objects.filter(public=True).count()
 		
 
 		if count > 0:
 			random_index = random.randint(0, count - 1)
-			poll = Poll.objects.all()[random_index]
+			poll = Poll.objects.filter(public=True)[random_index]
 		else:
 			return Response({
 				'status_code':status.HTTP_404_NOT_FOUND,
@@ -82,18 +82,18 @@ class PollViewSet(viewsets.ModelViewSet):
 	@list_route(methods=['get'])
 	def randomset(self, request):
 		"""
-		Retrieves a random** set of polls.
+		Retrieves a random** set of public polls.
 		"""
 
 		n = 5
 
-		count = Poll.objects.all().count()
+		count = Poll.objects.filter(public=True).count()
 
 		if count >= n:
 			random_index = random.randint(0, count - n)
-			polls = Poll.objects.all()[random_index:random_index + n]
+			polls = Poll.objects.filter(public=True)[random_index:random_index + n]
 		else:
-			polls = Poll.objects.all()
+			polls = Poll.objects.filter(public=True)
 
 		results = []
 

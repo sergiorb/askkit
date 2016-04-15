@@ -48,11 +48,13 @@ INSTALLED_APPS = [
     #'oauth2_provider',
     'rest_framework_swagger',
     'api',
+    'corsheaders',
 ]
 
 MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -171,7 +173,7 @@ REST_FRAMEWORK = {
     # or allow read-only access for unauthenticated users.
     'DEFAULT_AUTHENTICATION_CLASSES': (
     # Disable this for production.
-    'rest_framework.authentication.SessionAuthentication',
+    #'rest_framework.authentication.SessionAuthentication',
     'rest_framework.authentication.TokenAuthentication',
     ),
     'UNICODE_JSON': False,
@@ -185,3 +187,8 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 100,   
     'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',),
 }
+
+# CORS config
+
+# MOVE THIS TO A WHITELIST
+CORS_ORIGIN_ALLOW_ALL = True
