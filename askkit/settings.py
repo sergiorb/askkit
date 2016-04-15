@@ -90,7 +90,7 @@ WSGI_APPLICATION = 'askkit.wsgi.application'
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 DATABASES = {
      'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': os.environ.get('DB_NAME'),
         'HOST': os.environ.get('DB_HOST'),
         'PORT': os.environ.get('DB_PORT'),
