@@ -24,10 +24,10 @@ urlpatterns = [
 		name='core_vote_count'),
 
 	# Disable this for production.
-    url(r'^api-auth/', include('rest_framework.urls', 
-    	namespace='rest_framework')),
+    #url(r'^api-auth/', include('rest_framework.urls', 
+    #	namespace='rest_framework')),
 
-    url(r'^request-auth-token/', views.obtain_auth_token)
+    #url(r'^request-auth-token/', views.obtain_auth_token)
 
     #url(r'^o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
 ]

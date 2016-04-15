@@ -11,3 +11,6 @@ db*
 # Celery
 *.pid
  celerybeat-schedule
+
+# django
+staticfiles/
