@@ -9,6 +9,7 @@ move from generic.View to rest_framework.View ?? (on */api/views_celery.py*)
 
 ~~If request.user == owner~~ or in_list(), retrieve object (on */api/views_polls.py*)
 
-Add signup and close account methods (on */api/views_users.py*)
-
 **Improve vote count trigger system** (on */polls/signals.py*)
+
+**Add registration validation** (on */askkit/settings.py*)
+

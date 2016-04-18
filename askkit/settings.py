@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'polls',
     'rest_framework',
     'rest_framework.authtoken',
+    'djoser',
     #'oauth2_provider',
     'rest_framework_swagger',
     'api',
@@ -171,7 +172,7 @@ REST_FRAMEWORK = {
     # or allow read-only access for unauthenticated users.
     'DEFAULT_AUTHENTICATION_CLASSES': (
         # Disable this for production.
-        'rest_framework.authentication.SessionAuthentication',
+        #'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.TokenAuthentication',
     ),
     'DEFAULT_RENDERER_CLASSES': (
@@ -183,4 +184,12 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 100,   
     'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',),
+}
+
+
+# Djoser user api
+
+DJOSER = {
+    'DOMAIN': 'askkit.net',
+    'SITE_NAME': 'Askkit',
 }
