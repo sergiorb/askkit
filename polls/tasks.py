@@ -78,8 +78,9 @@ def chord_update_poll_votes(pk):
 
 	poll = Poll.objects.get(pk=pk)
 
-	callback = update_poll_votes.s(pk)
-	header = [count_option_votes.s(option.pk) for option in poll.options.all()]
+	# WORKARROUND: "str(pk)" and "str(option.pk)" solves celery UUID Json no serializable
+	callback = update_poll_votes.s(str(pk))
+	header = [count_option_votes.s(str(option.pk)) for option in poll.options.all()]
 	result = chord(header)(callback)
 
 
@@ -90,9 +91,11 @@ def update_votes():
 	"""
 	polls = Poll.objects.all()
 
+	print "#############################################################"
 	for poll in polls:
-
-		chord_update_poll_votes.delay(poll.pk)
+		print str(poll.pk)
+		chord_update_poll_votes.delay(str(poll.pk))
+	print "#############################################################"
 
 
 @app.task

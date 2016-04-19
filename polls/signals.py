@@ -16,7 +16,8 @@ def update_poll_votes_on_delete(sender, instance, **kwargs):
 	Updates votes count on vote deletion. 
 	"""
 	
-	update_poll_votes.delay(instance.option.poll.pk)
+	# WORKARROUND: "str(instance.option.poll.pk)" solves celery UUID Json no serializable
+	update_poll_votes.delay(str(instance.option.poll.pk))
 
 
 @receiver(post_save, sender=Vote, dispatch_uid="update_poll_votes_on_create")
@@ -28,7 +29,8 @@ def update_poll_votes_on_create(sender, instance, **kwargs):
 	the system. TODO: IMPROVE VOTE COUNT TRIGGER SYSTEM. 
 	"""
 
-	update_poll_votes.delay(instance.option.poll.pk)
+	# WORKARROUND: "str(instance.option.poll.pk)" solves celery UUID Json no serializable
+	update_poll_votes.delay(str(instance.option.poll.pk))
 
 
 @receiver(post_save, sender=get_user_model(), dispatch_uid="create_auth_token_on_user_creation")
