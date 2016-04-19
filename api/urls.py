@@ -13,44 +13,8 @@ from .views_celery import GetTaskStatus, CountVotes
 from .views_polls import PollViewSet, OptionViewSet, VoteViewSet
 from .views_users import UserViewSet
 
-class MyCustomRouter(routers.DefaultRouter):
-
-	def get_api_root_view(self):
-		"""
-		Return a view to use as the API root.
-		"""
-		api_root_dict = OrderedDict()
-		list_name = self.routes[0].name
-		for prefix, viewset, basename in self.registry:
-			api_root_dict[prefix] = list_name.format(basename=basename)
-
-		class APIRoot(views.APIView):
-			_ignore_model_permissions = True
-
-			def get(self, request, *args, **kwargs):
-				ret = OrderedDict()
-				namespace = request.resolver_match.namespace
-				for key, url_name in api_root_dict.items():
-					if namespace:
-						url_name = namespace + ':' + url_name
-					try:
-						ret[key] = reverse(
-						url_name,
-						args=args,
-						kwargs=kwargs,
-						request=request,
-						format=kwargs.get('format', None)
-						)
-					except NoReverseMatch:
-						# Don't bail out if eg. no list routes exist, only detail routes.
-						continue
-
-				return Response(ret)
-
-		return APIRoot.as_view()
-
-router = MyCustomRouter()
-#router = routers.DefaultRouter()
+#router = MyCustomRouter()
+router = routers.DefaultRouter()
 #router = routers.SimpleRouter()
 
 router.register(r'polls', PollViewSet)
