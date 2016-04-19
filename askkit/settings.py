@@ -49,11 +49,13 @@ INSTALLED_APPS = [
     #'oauth2_provider',
     'rest_framework_swagger',
     'api',
+    'corsheaders',
 ]
 
 MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -146,7 +148,7 @@ BROKER_URL = os.environ.get('CELERY_BROKER_URL')
 
 CELERY_RESULT_BACKEND = os.environ.get('CELERY_RESULT_BACKEND')
 
-CELERY_RESULT_BACKEND = os.environ.get('CELERY_RESULT_BACKEND')
+# CELERY_RESULT_BACKEND = os.environ.get('CELERY_RESULT_BACKEND')
 
 CELERY_DEFAULT_QUEUE = 'default'
 
@@ -175,6 +177,7 @@ REST_FRAMEWORK = {
         #'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.TokenAuthentication',
     ),
+    'UNICODE_JSON': False,
     'DEFAULT_RENDERER_CLASSES': (
         'rest_framework.renderers.JSONRenderer',
         #'rest_framework.renderers.AdminRenderer',
@@ -193,3 +196,8 @@ DJOSER = {
     'DOMAIN': 'askkit.net',
     'SITE_NAME': 'Askkit',
 }
+
+# CORS config
+
+# MOVE THIS TO A WHITELIST
+CORS_ORIGIN_ALLOW_ALL = True
